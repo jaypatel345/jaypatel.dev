@@ -9,6 +9,13 @@
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script src="https://unpkg.com/rxdb@15.0.0/dist/rxdb.browser.js"></script>
+  <script src="auth-config.js"></script>
+  <script src="contribution-rxdb.js"></script>
+  <script src="contribution-data.js"></script>
+  <script src="contribution-cell.js"></script>
+  <script src="contribution-grid.js"></script>
+  <script src="contribution-tracker.js"></script>
 </head>
 <body>
   <div class="container">
@@ -125,6 +132,14 @@
           <div>C++</div>
           <div>SQL</div>
         </div>
+      </section>
+
+      <section class="section">
+        <div class="section-header">
+          <div class="divider"></div>
+          <h2>coding</h2>
+        </div>
+        <div id="contribution-tracker" class="contribution-tracker-section"></div>
       </section>
 
       <section class="section">
