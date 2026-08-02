@@ -121,7 +121,7 @@ function getRemainingAttempts() {
 async function verifyKey(providedKey) {
   // Try server verification first (more secure)
   try {
-    const response = await fetch('/api/auth/verify', {
+    const response = await fetch('/.netlify/functions/verify', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
