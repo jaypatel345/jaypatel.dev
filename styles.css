@@ -408,8 +408,6 @@ body {
 
 .contribution-tracker-section {
   margin-top: 2rem;
-  min-height: 180px;
-  height: 180px;
   position: relative;
 }
 
@@ -437,15 +435,15 @@ body {
 }
 
 .legend-color.light {
-  background-color: #c6e48b;
+  background-color: #9be9a8;
 }
 
 .legend-color.mid {
-  background-color: #7bc96f;
+  background-color: #40c463;
 }
 
 .legend-color.dark {
-  background-color: #239a3b;
+  background-color: #30a14e;
 }
 
 .dark-mode .legend-color.light {
@@ -598,7 +596,6 @@ body {
 .contribution-grid-container {
   margin-bottom: 1rem;
   width: 100%;
-  min-width: 600px;
   overflow-x: auto;
   padding: 0 20px;
 }
@@ -609,7 +606,7 @@ body {
   gap: 20px;
   overflow-x: auto;
   overflow-y: hidden;
-  padding: 10px 0;
+  padding: 10px 60px 10px 0;
   align-items: flex-start;
   width: 100%;
   flex-wrap: nowrap;
@@ -664,6 +661,45 @@ body {
   .contribution-top-bar {
     flex-wrap: wrap;
     gap: 12px;
+  }
+  
+  .contribution-grid-container {
+    padding: 0 10px;
+  }
+  
+  .contribution-grid-wrapper {
+    padding: 10px 40px 10px 0;
+    gap: 15px;
+  }
+  
+  .contribution-month-grid {
+    grid-template-columns: repeat(10, 12px);
+    gap: 2px;
+  }
+  
+  .contribution-cell {
+    width: 10px;
+    height: 10px;
+  }
+  
+  .contribution-month-label {
+    font-size: 10px;
+  }
+  
+  .contribution-legend {
+    font-size: 9px;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .legend-item {
+    gap: 4px;
+  }
+  
+  .legend-color {
+    width: 10px;
+    height: 10px;
   }
 
   .contribution-month-grid {

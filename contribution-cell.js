@@ -23,9 +23,9 @@ class ContributionCell {
   static getColors() {
     return {
       empty: '#ebedf0',
-      level1: '#c6e48b',  // light green (2+ hours)
-      level2: '#7bc96f',  // mid green (6+ hours)
-      level3: '#239a3b'   // dark green (10+ hours)
+      level1: '#9be9a8',  // light green (GitHub level 1)
+      level2: '#40c463',  // mid green (GitHub level 2)
+      level3: '#30a14e'   // dark green (GitHub level 3)
     };
   }
 

@@ -659,9 +659,9 @@ class ContributionTracker {
         { level: 2, color: '#006d32', label: '6h+' },
         { level: 3, color: '#26a641', label: '10h+' }
       ] : [
-        { level: 1, color: '#c6e48b', label: '2h+' },
-        { level: 2, color: '#7bc96f', label: '6h+' },
-        { level: 3, color: '#239a3b', label: '10h+' }
+        { level: 1, color: '#9be9a8', label: '2h+' },
+        { level: 2, color: '#40c463', label: '6h+' },
+        { level: 3, color: '#30a14e', label: '10h+' }
       ];
       
       colorOptions.forEach(option => {
@@ -764,9 +764,9 @@ class ContributionTracker {
       { level: 2, color: '#006d32', label: '6h+' },
       { level: 3, color: '#26a641', label: '10h+' }
     ] : [
-      { level: 1, color: '#c6e48b', label: '2h+' },
-      { level: 2, color: '#7bc96f', label: '6h+' },
-      { level: 3, color: '#239a3b', label: '10h+' }
+      { level: 1, color: '#9be9a8', label: '2h+' },
+      { level: 2, color: '#40c463', label: '6h+' },
+      { level: 3, color: '#30a14e', label: '10h+' }
     ];
     
     // Clear existing color options
