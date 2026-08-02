@@ -1,19 +1,66 @@
 // ============================================
-// CONTRIBUTION DATA MODEL
+// CONTRIBUTION DATA MODEL - FIREBASE VERSION
 // ============================================
 
 /**
- * Contribution data model designed for:
+ * Contribution data model using Firebase Realtime Database
  * - Multi-year support with infinite scroll
  * - Owner-only editing capability
- * - LocalStorage persistence
- * - Future backend integration readiness
+ * - Firebase persistence for all users
+ * - Real-time data synchronization
  */
 
 class ContributionData {
   constructor() {
-    this.storageKey = 'contribution_data';
-    this.data = this.loadData();
+    this.data = {};
+    this.database = window.firebaseDatabase;
+    this.dbRef = this.database.ref('contributions');
+    this.initialized = false;
+    this.init();
+  }
+
+  /**
+   * Initialize data from Firebase
+   */
+  async init() {
+    try {
+      const snapshot = await this.dbRef.once('value');
+      const firebaseData = snapshot.val();
+      
+      if (firebaseData) {
+        this.data = firebaseData;
+      } else {
+        // Initialize with empty data if Firebase is empty
+        this.data = this.initializeData();
+        await this.saveData();
+      }
+      
+      this.initialized = true;
+      console.log('Firebase data loaded successfully');
+      
+      // Set up real-time listener
+      this.setupRealtimeListener();
+    } catch (error) {
+      console.error('Firebase initialization failed:', error);
+      // Fallback to local initialization
+      this.data = this.initializeData();
+      this.initialized = true;
+    }
+  }
+
+  /**
+   * Set up real-time listener for data changes
+   */
+  setupRealtimeListener() {
+    this.dbRef.on('value', (snapshot) => {
+      const firebaseData = snapshot.val();
+      if (firebaseData) {
+        this.data = firebaseData;
+        console.log('Real-time data update received');
+        // Dispatch event for UI update
+        document.dispatchEvent(new CustomEvent('contributionDataUpdated'));
+      }
+    });
   }
 
   /**
@@ -59,45 +106,20 @@ class ContributionData {
   }
 
   /**
-   * Load data from localStorage or initialize
+   * Save data to Firebase
    */
-  loadData() {
-    const stored = localStorage.getItem(this.storageKey);
-    if (stored) {
-      try {
-        const parsedData = JSON.parse(stored);
-        // Clear old data and reinitialize with new date range
-        localStorage.removeItem(this.storageKey);
-        return this.initializeData();
-      } catch (e) {
-        console.error('Failed to parse contribution data:', e);
-        return this.initializeData();
-      }
-    }
-    return this.initializeData();
-  }
-
-  /**
-   * Merge existing data with new date range
-   */
-  mergeDataWithDateRange(existingData) {
-    const newData = this.initializeData();
-    
-    // Copy existing contributions that fall within the new date range
-    for (const dateKey in existingData) {
-      if (newData[dateKey]) {
-        newData[dateKey] = existingData[dateKey];
-      }
+  async saveData() {
+    if (!this.data) {
+      console.error('Cannot save: this.data is null or undefined');
+      return;
     }
     
-    return newData;
-  }
-
-  /**
-   * Save data to localStorage
-   */
-  saveData() {
-    localStorage.setItem(this.storageKey, JSON.stringify(this.data));
+    try {
+      await this.dbRef.set(this.data);
+      console.log('Data saved to Firebase successfully');
+    } catch (error) {
+      console.error('Firebase save failed:', error);
+    }
   }
 
   /**
@@ -130,7 +152,7 @@ class ContributionData {
       this.data[dateKey].lastUpdated = null;
     }
 
-    this.saveData();
+    // Don't auto-save - user must manually save
     return this.data[dateKey];
   }
 
@@ -157,6 +179,7 @@ class ContributionData {
     let currentStreak = 0;
     let maxStreak = 0;
     let tempStreak = 0;
+    let lastUpdated = null;
 
     // Sort dates and calculate streaks
     const sortedDates = Object.keys(this.data).sort();
@@ -169,6 +192,11 @@ class ContributionData {
         
         if (tempStreak > maxStreak) {
           maxStreak = tempStreak;
+        }
+
+        // Track last updated
+        if (entry.lastUpdated && (!lastUpdated || new Date(entry.lastUpdated) > new Date(lastUpdated))) {
+          lastUpdated = entry.lastUpdated;
         }
       } else {
         tempStreak = 0;
@@ -189,7 +217,7 @@ class ContributionData {
       totalActiveDays,
       currentStreak,
       maxStreak,
-      lastUpdated: this.getLastUpdatedDate()
+      lastUpdated
     };
   }
 
@@ -234,7 +262,7 @@ class ContributionData {
   }
 
   /**
-   * Export data for backend sync (future use)
+   * Export data for backup
    */
   exportData() {
     return {
@@ -245,7 +273,7 @@ class ContributionData {
   }
 
   /**
-   * Import data from backend (future use)
+   * Import data from backup
    */
   importData(importedData) {
     if (importedData && importedData.data) {

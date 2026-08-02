@@ -7,7 +7,7 @@
  * Pre-computed hash of your secret key
  * Generate with: hashKey('your-secret-key')
  */
-const SECRET_HASH = '1915987275'; // Hash of 'jaypatel2026'
+const SECRET_HASH = '-1818546715'; // Hash of 'jay2005'
 
 /**
  * Better hash function using SHA-256 (if available) or fallback
@@ -119,28 +119,34 @@ function getRemainingAttempts() {
  * Verify if provided key matches secret key (using server endpoint if available)
  */
 async function verifyKey(providedKey) {
-  // Try server verification first (more secure)
-  try {
-    const response = await fetch('/.netlify/functions/verify', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ key: providedKey })
-    });
-    
-    if (response.ok) {
-      const data = await response.json();
-      if (data.success) {
-        // Store JWT token
-        if (data.token) {
-          sessionStorage.setItem('authToken', data.token);
+  // Check if running on localhost (disable server verification)
+  const isLocalhost = window.location.hostname === 'localhost' || 
+                      window.location.hostname === '127.0.0.1';
+  
+  if (!isLocalhost) {
+    // Try server verification first (more secure)
+    try {
+      const response = await fetch('/.netlify/functions/verify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ key: providedKey })
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        if (data.success) {
+          // Store JWT token
+          if (data.token) {
+            sessionStorage.setItem('authToken', data.token);
+          }
+          return true;
         }
-        return true;
       }
+    } catch (error) {
+      console.log('Server verification failed, falling back to client-side');
     }
-  } catch (error) {
-    console.log('Server verification failed, falling back to client-side');
   }
   
   // Fallback to client-side verification (less secure)

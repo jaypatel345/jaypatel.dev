@@ -16,38 +16,22 @@ class ContributionTracker {
     this.isOwner = options.isOwner || false; // Set to true only for you
     this.editModeEnabled = false;
     
-    // Initialize with localStorage first for immediate display
+    // Initialize with Firebase (async)
     this.data = new ContributionData();
     
-    // Initialize components immediately
-    this.initComponents();
-    this.initEditMode();
-    this.render();
+    // Show loading message
+    this.container.innerHTML = '<div style="text-align: center; padding: 20px;">Loading...</div>';
     
-    // Then try to upgrade to RxDB asynchronously
-    this.upgradeToRxDB();
-  }
-
-  /**
-   * Upgrade to RxDB if available
-   */
-  async upgradeToRxDB() {
-    try {
-      if (typeof ContributionRxDB !== 'undefined') {
-        const rxdbData = new ContributionRxDB();
-        await rxdbData.init(); // Wait for RxDB initialization
-        await rxdbData.migrateFromLocalStorage(); // Migrate existing data
-        
-        // Switch to RxDB data layer
-        this.data = rxdbData;
-        this.grid.data = rxdbData;
-        this.grid.renderGrid(); // Re-render with new data
-        
-        console.log('Upgraded to RxDB data layer');
-      }
-    } catch (error) {
-      console.error('RxDB upgrade failed, using localStorage:', error);
-    }
+    // Wait for Firebase initialization before rendering
+    this.data.init().then(() => {
+      // Initialize components after data is ready
+      this.initComponents();
+      this.initEditMode();
+      this.render();
+    }).catch(() => {
+      // Fallback on error
+      this.container.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">Failed to load data</div>';
+    });
   }
 
   /**
@@ -282,8 +266,10 @@ class ContributionTracker {
           clearFailedAttempts();
           setAuthenticated(true);
           this.isOwner = true; // Enable owner mode
+          console.log('Before toggleEditMode - isOwner:', this.isOwner, 'editModeEnabled:', this.editModeEnabled);
           modal.remove();
           this.toggleEditMode();
+          console.log('After toggleEditMode - isOwner:', this.isOwner, 'editModeEnabled:', this.editModeEnabled);
         } else {
           // Record failed attempt
           const isNowLocked = recordFailedAttempt();
@@ -423,6 +409,8 @@ class ContributionTracker {
   toggleEditMode() {
     this.editModeEnabled = !this.editModeEnabled;
     
+    console.log('Toggle edit mode:', this.editModeEnabled, 'isOwner:', this.isOwner, 'saveButton exists:', !!this.saveButton);
+    
     // Update button style to show active state
     this.editButton.style.background = this.editModeEnabled 
       ? 'var(--accent-bg)' 
@@ -430,6 +418,12 @@ class ContributionTracker {
     this.editButton.style.color = this.editModeEnabled 
       ? 'var(--primary-color)' 
       : 'var(--text-color)';
+    
+    // Show/hide save button
+    if (this.saveButton) {
+      this.saveButton.style.display = this.editModeEnabled && this.isOwner ? 'inline-block' : 'none';
+      console.log('Save button display set to:', this.saveButton.style.display);
+    }
     
     // Update grid editability
     this.grid.isEditable = this.isOwner && this.editModeEnabled;
@@ -439,6 +433,71 @@ class ContributionTracker {
     
     // Show/hide edit indicator
     this.updateEditIndicator();
+  }
+
+  /**
+   * Save data to localStorage/RxDB
+   */
+  async saveData() {
+    console.log('SaveData called, data has saveData:', !!this.data.saveData, 'data has db:', !!this.data.db);
+    
+    if (this.data.saveData) {
+      if (this.data.db) {
+        // RxDB instance (async)
+        await this.data.saveData();
+      } else {
+        // LocalStorage instance (sync)
+        this.data.saveData();
+        console.log('LocalStorage save completed');
+      }
+      console.log('Data saved successfully');
+      
+      // Show brief success message
+      this.showSaveNotification();
+    } else {
+      console.error('Data object does not have saveData method');
+    }
+  }
+
+  /**
+   * Show save notification
+   */
+  showSaveNotification() {
+    const notification = document.createElement('div');
+    notification.textContent = 'Data saved!';
+    notification.style.cssText = `
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--primary-color);
+      color: white;
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 12px;
+      z-index: 1001;
+      animation: fadeInOut 2s ease-in-out;
+    `;
+    
+    // Add animation keyframes if not exists
+    if (!document.getElementById('save-notification-style')) {
+      const style = document.createElement('style');
+      style.id = 'save-notification-style';
+      style.textContent = `
+        @keyframes fadeInOut {
+          0% { opacity: 0; transform: translateY(10px); }
+          10% { opacity: 1; transform: translateY(0); }
+          90% { opacity: 1; transform: translateY(0); }
+          100% { opacity: 0; transform: translateY(-10px); }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+    
+    document.body.appendChild(notification);
+    
+    setTimeout(() => {
+      notification.remove();
+    }, 2000);
   }
 
   /**
@@ -527,6 +586,29 @@ class ContributionTracker {
     this.editButton.style.marginBottom = '0';
     this.editButton.style.marginRight = 'auto';
     topBar.appendChild(this.editButton);
+
+    // Add save button (only visible when edit mode is enabled)
+    this.saveButton = document.createElement('button');
+    this.saveButton.className = 'save-button';
+    this.saveButton.textContent = 'Save';
+    this.saveButton.style.cssText = `
+      padding: 6px 12px;
+      font-size: 11px;
+      font-family: inherit;
+      border: 1px solid var(--primary-color);
+      background: var(--primary-color);
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: none;
+    `;
+    
+    this.saveButton.addEventListener('click', () => {
+      this.saveData();
+    });
+    
+    topBar.appendChild(this.saveButton);
     
     // Add stats
     const stats = this.data.getStatistics();
