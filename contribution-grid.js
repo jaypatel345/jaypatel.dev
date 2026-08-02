@@ -82,11 +82,11 @@ class ContributionGrid {
     
     this.container.appendChild(this.gridWrapper);
     
-    // Scroll to current month on the left side (use requestAnimationFrame for timing)
+    // Scroll to current month on the right side (use requestAnimationFrame for timing)
     requestAnimationFrame(() => {
       setTimeout(() => {
         this.scrollToCurrentMonth(months);
-      }, 100);
+      }, 300);
     });
   }
 
@@ -258,7 +258,7 @@ class ContributionGrid {
   }
 
   /**
-   * Scroll to current month and position it on the left side
+   * Scroll to current month and position it on the right side
    */
   scrollToCurrentMonth(months) {
     const currentMonth = new Date().getMonth();
@@ -275,8 +275,10 @@ class ContributionGrid {
       const currentMonthContainer = monthContainers[currentIndex];
       
       if (currentMonthContainer) {
-        // Calculate position to show current month on the left side with some padding
-        const scrollPosition = currentMonthContainer.offsetLeft - 20;
+        // Calculate position to show current month on the right side
+        const containerWidth = this.gridWrapper.offsetWidth;
+        const monthWidth = currentMonthContainer.offsetWidth;
+        const scrollPosition = currentMonthContainer.offsetLeft - (containerWidth - monthWidth - 40);
         
         // Use direct scroll assignment for reliability
         this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);

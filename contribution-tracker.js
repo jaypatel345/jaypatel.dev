@@ -16,11 +16,11 @@ class ContributionTracker {
     this.isOwner = options.isOwner || false; // Set to true only for you
     this.editModeEnabled = false;
     
-    // Initialize with Firebase (async)
-    this.data = new ContributionData();
-    
     // Show loading message
     this.container.innerHTML = '<div style="text-align: center; padding: 20px;">Loading...</div>';
+    
+    // Initialize with Firebase (async)
+    this.data = new ContributionData();
     
     // Wait for Firebase initialization before rendering
     this.data.init().then(() => {
@@ -28,6 +28,14 @@ class ContributionTracker {
       this.initComponents();
       this.initEditMode();
       this.render();
+      
+      // Scroll to current month after everything is rendered
+      setTimeout(() => {
+        if (this.grid) {
+          const months = this.grid.getMonthsInRange();
+          this.grid.scrollToCurrentMonth(months);
+        }
+      }, 500);
     }).catch(() => {
       // Fallback on error
       this.container.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">Failed to load data</div>';
