@@ -4,6 +4,22 @@
 
 /**
  * Firebase configuration for jaypatel-dev project
+ * 
+ * IMPORTANT: Update Firebase security rules to:
+ * {
+ *   "rules": {
+ *     ".read": true,
+ *     ".write": "auth != null"
+ *   }
+ * }
+ * 
+ * Or for public read/write (not recommended for production):
+ * {
+ *   "rules": {
+ *     ".read": true,
+ *     ".write": true
+ *   }
+ * }
  */
 
 const firebaseConfig = {
