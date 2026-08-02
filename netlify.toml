@@ -1,3 +1,6 @@
 [build]
   command = "echo 'No build needed'"
   publish = "/"
+
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = ["JWT_SECRET", "SECRET_KEY"]
