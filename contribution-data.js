@@ -28,23 +28,44 @@ class ContributionData {
       const firebaseData = snapshot.val();
       
       if (firebaseData) {
-        this.data = firebaseData;
+        // Check if existing data matches current date range
+        const expectedStart = new Date(2025, 9, 1); // Oct 2025
+        const expectedEnd = new Date(2026, 7, 31); // Aug 2026
+        
+        // Get the date range from existing data
+        const dateKeys = Object.keys(firebaseData);
+        if (dateKeys.length > 0) {
+          const firstDate = this.parseDateKey(dateKeys[0]);
+          const lastDate = this.parseDateKey(dateKeys[dateKeys.length - 1]);
+          
+          // If date range doesn't match, clear and reinitialize
+          if (firstDate < expectedStart || lastDate > expectedEnd) {
+            console.log('Date range mismatch. Clearing old data and reinitializing...');
+            await this.dbRef.remove();
+            this.data = this.initializeData();
+            await this.saveData();
+          } else {
+            this.data = firebaseData;
+            console.log('Firebase data loaded successfully');
+          }
+        } else {
+          this.data = firebaseData;
+          console.log('Firebase data loaded successfully');
+        }
       } else {
         // Initialize with empty data if Firebase is empty
         this.data = this.initializeData();
         await this.saveData();
+        console.log('Firebase data initialized with new date range');
       }
       
       this.initialized = true;
-      console.log('Firebase data loaded successfully');
       
       // Set up real-time listener
       this.setupRealtimeListener();
     } catch (error) {
       console.error('Firebase initialization failed:', error);
-      // Fallback to local initialization
-      this.data = this.initializeData();
-      this.initialized = true;
+      throw new Error(`Firebase initialization failed: ${error.message}`);
     }
   }
 
@@ -66,20 +87,19 @@ class ContributionData {
   /**
    * Initialize contribution data structure
    * Uses date strings as keys for easy backend migration
-   * Syncs with current timeline (Oct 2025 to 2028)
+   * Syncs with current timeline (Oct 2025 to Aug 2026)
+   * Level system: 0=no activity, 1=light green (2+ hours), 2=mid green (6+ hours), 3=dark green (10+ hours)
    */
   initializeData() {
     const startDate = new Date(2025, 9, 1); // Start from Oct 2025
-    const endDate = new Date(2028, 11, 31); // End at 2028
+    const endDate = new Date(2026, 7, 31); // End at Aug 2026
     const data = {};
 
     // Generate empty contribution data for the date range
     for (let date = new Date(startDate); date <= endDate; date.setDate(date.getDate() + 1)) {
       const dateKey = this.formatDateKey(date);
       data[dateKey] = {
-        count: 0,
-        level: 0, // 0-4 for contribution levels (future use)
-        types: [], // ['github', 'leetcode', 'projects', 'learning', 'opensource']
+        level: 0, // 0-3: 0=none, 1=light green (2+ hrs), 2=mid green (6+ hrs), 3=dark green (10+ hrs)
         lastUpdated: null
       };
     }
@@ -127,32 +147,30 @@ class ContributionData {
    */
   getContribution(date) {
     const dateKey = this.formatDateKey(date);
-    return this.data[dateKey] || { count: 0, level: 0, types: [], lastUpdated: null };
+    return this.data[dateKey] || { level: 0, lastUpdated: null };
   }
 
   /**
-   * Toggle contribution for a specific date (owner only)
+   * Cycle through contribution levels for a specific date (owner only)
+   * Levels: 0=none -> 1=light green (2+ hrs) -> 2=mid green (6+ hrs) -> 3=dark green (10+ hrs) -> 0=none
    */
-  toggleContribution(date) {
+  cycleContribution(date) {
     const dateKey = this.formatDateKey(date);
     
     if (!this.data[dateKey]) {
-      this.data[dateKey] = { count: 0, level: 0, types: [], lastUpdated: null };
+      this.data[dateKey] = { level: 0, lastUpdated: null };
     }
 
-    // Toggle between 0 and 1 (simple on/off for now)
-    if (this.data[dateKey].count === 0) {
-      this.data[dateKey].count = 1;
-      this.data[dateKey].level = 1;
-      this.data[dateKey].lastUpdated = new Date().toISOString();
-    } else {
-      this.data[dateKey].count = 0;
-      this.data[dateKey].level = 0;
-      this.data[dateKey].types = [];
+    // Cycle through levels: 0 -> 1 -> 2 -> 3 -> 0
+    this.data[dateKey].level = (this.data[dateKey].level + 1) % 4;
+    
+    if (this.data[dateKey].level === 0) {
       this.data[dateKey].lastUpdated = null;
+    } else {
+      this.data[dateKey].lastUpdated = new Date().toISOString();
     }
 
-    // Don't auto-save - user must manually save
+    // Auto-save will be called by handleCellClick
     return this.data[dateKey];
   }
 
@@ -186,7 +204,7 @@ class ContributionData {
     
     for (let i = 0; i < sortedDates.length; i++) {
       const entry = this.data[sortedDates[i]];
-      if (entry.count > 0) {
+      if (entry.level > 0) {
         totalActiveDays++;
         tempStreak++;
         
@@ -206,7 +224,7 @@ class ContributionData {
     // Calculate current streak (going backwards from today)
     for (let i = sortedDates.length - 1; i >= 0; i--) {
       const entry = this.data[sortedDates[i]];
-      if (entry.count > 0) {
+      if (entry.level > 0) {
         currentStreak++;
       } else {
         break;
@@ -250,9 +268,7 @@ class ContributionData {
       const dateKey = this.formatDateKey(date);
       if (!this.data[dateKey]) {
         this.data[dateKey] = {
-          count: 0,
           level: 0,
-          types: [],
           lastUpdated: null
         };
       }

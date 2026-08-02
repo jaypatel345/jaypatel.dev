@@ -16,8 +16,19 @@ class ContributionTracker {
     this.isOwner = options.isOwner || false; // Set to true only for you
     this.editModeEnabled = false;
     
-    // Show loading message
-    this.container.innerHTML = '<div style="text-align: center; padding: 20px;">Loading...</div>';
+    // Show loading spinner with ScaleLoader
+    this.container.innerHTML = `
+      <div class="contribution-loading">
+        <div class="scale-loader">
+          <div class="scale-loader-bar"></div>
+          <div class="scale-loader-bar"></div>
+          <div class="scale-loader-bar"></div>
+          <div class="scale-loader-bar"></div>
+          <div class="scale-loader-bar"></div>
+        </div>
+        <div class="loading-text">Loading...</div>
+      </div>
+    `;
     
     // Initialize with Firebase (async)
     this.data = new ContributionData();
@@ -36,9 +47,16 @@ class ContributionTracker {
           this.grid.scrollToCurrentMonth(months);
         }
       }, 1000);
-    }).catch(() => {
-      // Fallback on error
-      this.container.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">Failed to load data</div>';
+    }).catch((error) => {
+      // Fallback on error with detailed message
+      console.error('Contribution tracker initialization failed:', error);
+      this.container.innerHTML = `
+        <div class="contribution-loading">
+          <div class="loading-text" style="color: var(--primary-color);">
+            Failed to load data: ${error.message || 'Unknown error'}
+          </div>
+        </div>
+      `;
     });
   }
 
@@ -95,6 +113,17 @@ class ContributionTracker {
         this.handleEditButtonClick();
       }
     });
+    
+    // Add theme listener to update color options
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'class') {
+          this.updateColorOptions();
+        }
+      });
+    });
+    
+    observer.observe(document.body, { attributes: true });
   }
 
   /**
@@ -207,7 +236,7 @@ class ContributionTracker {
     loadingIndicator.textContent = 'Verifying...';
     loadingIndicator.style.cssText = `
       font-size: 12px;
-      color: var(--text-muted);
+      color: var(--text-color);
       margin-bottom: 12px;
       display: none;
     `;
@@ -423,9 +452,9 @@ class ContributionTracker {
       ? 'var(--primary-color)' 
       : 'var(--text-color)';
     
-    // Show/hide save button
-    if (this.saveButton) {
-      this.saveButton.style.display = this.editModeEnabled && this.isOwner ? 'inline-block' : 'none';
+    // Show/hide edit indicator (save button is hidden since auto-save)
+    if (this.editIndicator) {
+      this.editIndicator.style.display = this.editModeEnabled && this.isOwner ? 'flex' : 'none';
     }
     
     // Update grid editability
@@ -433,26 +462,16 @@ class ContributionTracker {
     
     // Re-render grid to update cursor states
     this.grid.renderGrid();
-    
-    // Show/hide edit indicator
-    this.updateEditIndicator();
   }
 
   /**
    * Save data to localStorage/RxDB
    */
   async saveData() {
-    console.log('SaveData called, data has saveData:', !!this.data.saveData, 'data has db:', !!this.data.db);
+    console.log('SaveData called');
     
     if (this.data.saveData) {
-      if (this.data.db) {
-        // RxDB instance (async)
-        await this.data.saveData();
-      } else {
-        // LocalStorage instance (sync)
-        this.data.saveData();
-        console.log('LocalStorage save completed');
-      }
+      await this.data.saveData();
       console.log('Data saved successfully');
       
       // Show brief success message
@@ -504,29 +523,16 @@ class ContributionTracker {
   }
 
   /**
-   * Update visual edit indicator
-   */
-  updateEditIndicator() {
-    if (this.editIndicator) {
-      this.editIndicator.style.display = this.editModeEnabled ? 'block' : 'none';
-    }
-  }
-
-  /**
    * Handle cell click in edit mode
    */
   async handleCellClick(date) {
     if (!this.editModeEnabled || !this.isOwner) return;
     
-    // Toggle contribution (handle both sync and async)
-    let updatedContribution;
-    if (this.data.db) {
-      // RxDB instance (async)
-      updatedContribution = await this.data.toggleContribution(date);
-    } else {
-      // LocalStorage instance (sync)
-      updatedContribution = this.data.toggleContribution(date);
-    }
+    // Cycle through contribution levels
+    const updatedContribution = this.data.cycleContribution(date);
+    
+    // Automatically save to Firebase
+    await this.data.saveData();
     
     // Update the specific cell
     this.grid.updateCell(date);
@@ -563,6 +569,7 @@ class ContributionTracker {
    * Render the complete contribution tracker
    */
   render() {
+    console.log('ContributionTracker render() called');
     this.container.innerHTML = '';
     
     // Create main container with stats on top right
@@ -590,7 +597,7 @@ class ContributionTracker {
     this.editButton.style.marginRight = 'auto';
     topBar.appendChild(this.editButton);
 
-    // Add save button (only visible when edit mode is enabled)
+    // Add save button (only visible when edit mode is enabled) - hidden since auto-save
     this.saveButton = document.createElement('button');
     this.saveButton.className = 'save-button';
     this.saveButton.textContent = 'Save';
@@ -611,6 +618,8 @@ class ContributionTracker {
       this.saveData();
     });
     
+    // Hide save button since we auto-save
+    this.saveButton.style.display = 'none';
     topBar.appendChild(this.saveButton);
     
     // Add stats
@@ -626,25 +635,75 @@ class ContributionTracker {
     
     mainContainer.appendChild(topBar);
     
-    // Add edit indicator if needed
+    // Add edit mode color selector if needed
     if (this.isOwner) {
       const editIndicator = document.createElement('div');
       editIndicator.className = 'edit-indicator';
-      editIndicator.textContent = 'Click cells to toggle contributions';
       editIndicator.style.cssText = `
         font-size: 11px;
         color: var(--primary-color);
         font-style: italic;
         display: none;
+        align-items: center;
+        gap: 12px;
       `;
+      
+      const instructionText = document.createElement('span');
+      instructionText.textContent = 'Click cells to cycle: ';
+      editIndicator.appendChild(instructionText);
+      
+      // Add color options
+      const isDarkMode = document.body.classList.contains('dark-mode');
+      const colorOptions = isDarkMode ? [
+        { level: 1, color: '#0e4429', label: '2h+' },
+        { level: 2, color: '#006d32', label: '6h+' },
+        { level: 3, color: '#26a641', label: '10h+' }
+      ] : [
+        { level: 1, color: '#c6e48b', label: '2h+' },
+        { level: 2, color: '#7bc96f', label: '6h+' },
+        { level: 3, color: '#239a3b', label: '10h+' }
+      ];
+      
+      colorOptions.forEach(option => {
+        const colorBtn = document.createElement('div');
+        colorBtn.style.cssText = `
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          font-size: 10px;
+        `;
+        
+        const colorBox = document.createElement('div');
+        colorBox.style.cssText = `
+          width: 10px;
+          height: 10px;
+          border-radius: 2px;
+          background-color: ${option.color};
+        `;
+        
+        const label = document.createElement('span');
+        label.textContent = option.label;
+        
+        colorBtn.appendChild(colorBox);
+        colorBtn.appendChild(label);
+        editIndicator.appendChild(colorBtn);
+      });
+      
       mainContainer.appendChild(editIndicator);
       this.editIndicator = editIndicator;
     }
     
     // Add grid
+    console.log('Adding grid container to main container');
     mainContainer.appendChild(this.gridContainer);
     
+    console.log('Adding main container to page container');
     this.container.appendChild(mainContainer);
+    
+    // Add legend after the main container (below the grid)
+    this.addLegend(this.container);
+    
+    console.log('Grid container children:', this.gridContainer.children.length);
     
     // Add custom styles
     this.addStyles();
@@ -659,6 +718,86 @@ class ContributionTracker {
     const date = new Date(dateString);
     const options = { day: 'numeric', month: 'short', year: 'numeric' };
     return date.toLocaleDateString('en-US', options);
+  }
+
+  /**
+   * Add legend component showing color meanings
+   */
+  addLegend(container) {
+    const legend = document.createElement('div');
+    legend.className = 'contribution-legend';
+    
+    const legendItems = [
+      { color: 'light', label: '2h+' },
+      { color: 'mid', label: '6h+' },
+      { color: 'dark', label: '10h+' }
+    ];
+    
+    legendItems.forEach(item => {
+      const legendItem = document.createElement('div');
+      legendItem.className = 'legend-item';
+      
+      const colorBox = document.createElement('div');
+      colorBox.className = `legend-color ${item.color}`;
+      
+      const label = document.createElement('span');
+      label.className = 'legend-label';
+      label.textContent = item.label;
+      
+      legendItem.appendChild(colorBox);
+      legendItem.appendChild(label);
+      legend.appendChild(legendItem);
+    });
+    
+    container.appendChild(legend);
+  }
+
+  /**
+   * Update color options when theme changes
+   */
+  updateColorOptions() {
+    if (!this.editIndicator) return;
+    
+    const isDarkMode = document.body.classList.contains('dark-mode');
+    const colorOptions = isDarkMode ? [
+      { level: 1, color: '#0e4429', label: '2h+' },
+      { level: 2, color: '#006d32', label: '6h+' },
+      { level: 3, color: '#26a641', label: '10h+' }
+    ] : [
+      { level: 1, color: '#c6e48b', label: '2h+' },
+      { level: 2, color: '#7bc96f', label: '6h+' },
+      { level: 3, color: '#239a3b', label: '10h+' }
+    ];
+    
+    // Clear existing color options
+    const existingOptions = this.editIndicator.querySelectorAll('div[style*="display: flex"]');
+    existingOptions.forEach(option => option.remove());
+    
+    // Add updated color options
+    colorOptions.forEach(option => {
+      const colorBtn = document.createElement('div');
+      colorBtn.style.cssText = `
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 10px;
+      `;
+      
+      const colorBox = document.createElement('div');
+      colorBox.style.cssText = `
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background-color: ${option.color};
+      `;
+      
+      const label = document.createElement('span');
+      label.textContent = option.label;
+      
+      colorBtn.appendChild(colorBox);
+      colorBtn.appendChild(label);
+      this.editIndicator.appendChild(colorBtn);
+    });
   }
 
   /**

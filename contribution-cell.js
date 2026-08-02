@@ -17,28 +17,27 @@ class ContributionCell {
   }
 
   /**
-   * GitHub contribution colors (light mode)
+   * Study time colors (light mode)
+   * Level 0: empty, Level 1: light green (2+ hrs), Level 2: mid green (6+ hrs), Level 3: dark green (10+ hrs)
    */
   static getColors() {
     return {
       empty: '#ebedf0',
-      level1: '#9be9a8',
-      level2: '#40c463',
-      level3: '#30a14e',
-      level4: '#216e39'
+      level1: '#c6e48b',  // light green (2+ hours)
+      level2: '#7bc96f',  // mid green (6+ hours)
+      level3: '#239a3b'   // dark green (10+ hours)
     };
   }
 
   /**
-   * GitHub contribution colors (dark mode)
+   * Study time colors (dark mode)
    */
   static getDarkColors() {
     return {
       empty: '#161b22',
-      level1: '#0e4429',
-      level2: '#006d32',
-      level3: '#26a641',
-      level4: '#39d353'
+      level1: '#0e4429',  // light green (2+ hours)
+      level2: '#006d32',  // mid green (6+ hours)
+      level3: '#26a641'   // dark green (10+ hours)
     };
   }
 
@@ -64,7 +63,6 @@ class ContributionCell {
       case 1: return colors.level1;
       case 2: return colors.level2;
       case 3: return colors.level3;
-      case 4: return colors.level4;
       default: return colors.empty;
     }
   }
@@ -76,11 +74,14 @@ class ContributionCell {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const dateStr = this.date.toLocaleDateString('en-US', options);
     
-    if (this.contribution.count > 0) {
-      return `${this.contribution.count} contribution${this.contribution.count > 1 ? 's' : ''} on ${dateStr}`;
-    } else {
-      return `No contributions on ${dateStr}`;
-    }
+    const levelTexts = {
+      0: 'No study',
+      1: '2h+',
+      2: '6h+', 
+      3: '10h+'
+    };
+    
+    return `${levelTexts[this.contribution.level] || 'No study'} on ${dateStr}`;
   }
 
   /**
@@ -92,8 +93,8 @@ class ContributionCell {
     
     // LeetCode-style sizing and spacing
     cell.style.cssText = `
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 2px;
       background-color: ${this.getColor()};
       cursor: ${this.isEditable ? 'pointer' : 'default'};
@@ -102,7 +103,6 @@ class ContributionCell {
 
     // Add data attributes for accessibility and debugging
     cell.dataset.date = ContributionCell.formatDateKey(this.date);
-    cell.dataset.count = this.contribution.count;
     cell.dataset.level = this.contribution.level;
 
     // Hover effect
@@ -133,7 +133,6 @@ class ContributionCell {
   update(contribution) {
     this.contribution = contribution;
     this.element.style.backgroundColor = this.getColor();
-    this.element.dataset.count = contribution.count;
     this.element.dataset.level = contribution.level;
   }
 

@@ -407,7 +407,155 @@ body {
    ============================================ */
 
 .contribution-tracker-section {
-  margin-top: 1rem;
+  margin-top: 2rem;
+  min-height: 180px;
+  height: 180px;
+  position: relative;
+}
+
+.contribution-legend {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  font-size: 10px;
+  color: var(--text-muted);
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.legend-color.light {
+  background-color: #c6e48b;
+}
+
+.legend-color.mid {
+  background-color: #7bc96f;
+}
+
+.legend-color.dark {
+  background-color: #239a3b;
+}
+
+.dark-mode .legend-color.light {
+  background-color: #0e4429;
+}
+
+.dark-mode .legend-color.mid {
+  background-color: #006d32;
+}
+
+.dark-mode .legend-color.dark {
+  background-color: #26a641;
+}
+
+.legend-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.contribution-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 12px;
+}
+
+.scale-loader {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  height: 35px;
+}
+
+.scale-loader-bar {
+  width: 4px;
+  height: 20px;
+  background-color: var(--text-color);
+  border-radius: 2px;
+  animation: scale-animation 2s cubic-bezier(0.4, 0.0, 0.2, 1) infinite;
+}
+
+.scale-loader-bar:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.scale-loader-bar:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.scale-loader-bar:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.scale-loader-bar:nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.scale-loader-bar:nth-child(5) {
+  animation-delay: 0.4s;
+}
+
+@keyframes scale-animation {
+  0% {
+    transform: scaleY(0.3);
+    opacity: 0.3;
+  }
+  50% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleY(0.3);
+    opacity: 0.3;
+  }
+}
+
+@keyframes react-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes react-spin-reverse {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+.loading-text {
+  font-size: 12px;
+  color: var(--text-color);
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
 }
 
 .contribution-main-container {
@@ -449,6 +597,10 @@ body {
 
 .contribution-grid-container {
   margin-bottom: 1rem;
+  width: 100%;
+  min-width: 600px;
+  overflow-x: auto;
+  padding: 0 20px;
 }
 
 .contribution-grid-wrapper {
@@ -459,6 +611,8 @@ body {
   overflow-y: hidden;
   padding: 10px 0;
   align-items: flex-start;
+  width: 100%;
+  flex-wrap: nowrap;
 }
 
 .contribution-month-container {
