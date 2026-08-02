@@ -3,18 +3,18 @@
 // ============================================
 
 /**
- * Firebase configuration
- * Replace with your own Firebase project config
- * Get this from Firebase Console → Project Settings → General → Your apps
+ * Firebase configuration for jaypatel-dev project
  */
 
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  databaseURL: "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID"
+  apiKey: "AIzaSyAMQaloo2CgJvBSZranyyGrzYD8cQKxT4c",
+  authDomain: "jaypatel-dev.firebaseapp.com",
+  databaseURL: "https://jaypatel-dev-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "jaypatel-dev",
+  storageBucket: "jaypatel-dev.firebasestorage.app",
+  messagingSenderId: "111869620921",
+  appId: "1:111869620921:web:7b79ea79d86109e595a168",
+  measurementId: "G-28GK8PGMEZ"
 };
 
 // Initialize Firebase
