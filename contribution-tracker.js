@@ -35,7 +35,7 @@ class ContributionTracker {
           const months = this.grid.getMonthsInRange();
           this.grid.scrollToCurrentMonth(months);
         }
-      }, 500);
+      }, 1000);
     }).catch(() => {
       // Fallback on error
       this.container.innerHTML = '<div style="text-align: center; padding: 20px; color: red;">Failed to load data</div>';

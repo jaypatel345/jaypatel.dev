@@ -275,15 +275,26 @@ class ContributionGrid {
       const currentMonthContainer = monthContainers[currentIndex];
       
       if (currentMonthContainer) {
-        // Calculate position to show current month on the right side
-        const containerWidth = this.gridWrapper.offsetWidth;
-        const monthWidth = currentMonthContainer.offsetWidth;
-        const scrollPosition = currentMonthContainer.offsetLeft - (containerWidth - monthWidth - 40);
-        
-        // Use direct scroll assignment for reliability
-        this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);
-        
-        console.log('Scrolling to:', currentMonth, currentYear, 'at position:', scrollPosition);
+        // Wait for container to have proper dimensions
+        setTimeout(() => {
+          const containerWidth = this.gridWrapper.offsetWidth;
+          const monthWidth = currentMonthContainer.offsetWidth;
+          
+          // If container has no width, fallback to scrolling to current month directly
+          if (containerWidth === 0) {
+            this.gridWrapper.scrollLeft = currentMonthContainer.offsetLeft;
+            console.log('Fallback: Container width is 0, scrolling directly to current month');
+            return;
+          }
+          
+          // Calculate position to show current month on the right side of visible area
+          const scrollPosition = currentMonthContainer.offsetLeft - (containerWidth - monthWidth - 20);
+          
+          // Use direct scroll assignment for reliability
+          this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);
+          
+          console.log('Scrolling to:', currentMonth, currentYear, 'at position:', scrollPosition, 'container width:', containerWidth, 'month width:', monthWidth);
+        }, 100);
       } else {
         console.log('Current month container not found');
       }
