@@ -266,10 +266,8 @@ class ContributionTracker {
           clearFailedAttempts();
           setAuthenticated(true);
           this.isOwner = true; // Enable owner mode
-          console.log('Before toggleEditMode - isOwner:', this.isOwner, 'editModeEnabled:', this.editModeEnabled);
           modal.remove();
           this.toggleEditMode();
-          console.log('After toggleEditMode - isOwner:', this.isOwner, 'editModeEnabled:', this.editModeEnabled);
         } else {
           // Record failed attempt
           const isNowLocked = recordFailedAttempt();
@@ -409,8 +407,6 @@ class ContributionTracker {
   toggleEditMode() {
     this.editModeEnabled = !this.editModeEnabled;
     
-    console.log('Toggle edit mode:', this.editModeEnabled, 'isOwner:', this.isOwner, 'saveButton exists:', !!this.saveButton);
-    
     // Update button style to show active state
     this.editButton.style.background = this.editModeEnabled 
       ? 'var(--accent-bg)' 
@@ -422,7 +418,6 @@ class ContributionTracker {
     // Show/hide save button
     if (this.saveButton) {
       this.saveButton.style.display = this.editModeEnabled && this.isOwner ? 'inline-block' : 'none';
-      console.log('Save button display set to:', this.saveButton.style.display);
     }
     
     // Update grid editability
