@@ -287,8 +287,8 @@ class ContributionGrid {
             return;
           }
           
-          // Calculate position to show current month on the right side of visible area
-          const scrollPosition = currentMonthContainer.offsetLeft - (containerWidth - monthWidth - 20);
+          // Calculate position to show current month as the last visible month on the right side
+          const scrollPosition = currentMonthContainer.offsetLeft - (containerWidth - monthWidth);
           
           // Use direct scroll assignment for reliability
           this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);
