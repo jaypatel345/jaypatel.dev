@@ -766,6 +766,10 @@ body {
   display: block;
 }
 
+.nav-link svg {
+  display: block;
+}
+
 .nav-divider {
   width: 1px;
   height: 1.25rem;
