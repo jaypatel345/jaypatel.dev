@@ -85,7 +85,19 @@
                 </svg>
               </a>
             </div>
-            <p>AI-powered news summarization platform delivering top 10 stories with concise summaries using Groq's Llama 3.3. features real-time fetching, deduplication, and scheduled background jobs.</p>
+            <p>LangGraph tool-calling agent (Groq) answers news questions via live category + semantic vector search (pgvector, sentence-transformers), with full conversation memory over WebSockets.</p>
+            <div class="project-more">
+              <p>ingestion pipeline dedupes articles by canonical URL/title, extracts named entities, and auto-classifies categories on a scheduled job (APScheduler + GitHub Actions).</p>
+              <p>async FastAPI/PostgreSQL backend with JWT + guest auth and multi-model, multi-key LLM fallback for rate-limit resilience — Next.js frontend.</p>
+            </div>
+            <button class="show-more-btn" aria-expanded="false">
+              <span class="show-more-label">show more</span>
+              <span class="chevron">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </span>
+            </button>
           </div>
 
           <div class="project-item">

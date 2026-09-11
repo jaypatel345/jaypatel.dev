@@ -365,6 +365,51 @@ body {
   line-height: 1.7;
 }
 
+.project-item p + p {
+  margin-top: 0.5rem;
+}
+
+.project-more {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.project-more.expanded {
+  max-height: 500px;
+  opacity: 1;
+  margin-top: 0.5rem;
+}
+
+.show-more-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+  padding: 0;
+  background: none;
+  color: var(--text-muted);
+  border: none;
+  font-size: 0.75rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.show-more-btn:hover {
+  color: var(--text-color);
+}
+
+.show-more-btn .chevron {
+  padding: 0;
+  color: inherit;
+}
+
+.show-more-btn[aria-expanded="true"] .chevron {
+  transform: rotate(180deg);
+}
+
 /* ============================================
    TECH GRID
    ============================================ */
@@ -790,6 +835,34 @@ body {
   border: none;
   cursor: pointer;
   padding: 0;
+}
+
+/* ============================================
+   THEME TRANSITION (circular reveal)
+   ============================================ */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+}
+
+::view-transition-new(root) {
+  z-index: 2;
+  animation: theme-reveal 0.6s ease;
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0px at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
+  to {
+    clip-path: circle(var(--theme-toggle-r, 150%) at var(--theme-toggle-x, 50%) var(--theme-toggle-y, 50%));
+  }
 }
 
 /* ============================================

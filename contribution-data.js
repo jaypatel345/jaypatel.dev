@@ -240,24 +240,30 @@ class ContributionData {
   }
 
   /**
-   * Cycle through contribution levels for a specific date (owner only)
-   * Levels: 0=none -> 1=light green (2+ hrs) -> 2=mid green (6+ hrs) -> 3=dark green (10+ hrs) -> 4=coding (light green coding boxes) -> 0=none
+   * Map an exact hour count to a contribution level (owner only)
+   * 0h -> 0 (none), 1-5h -> 1 (light), 6-9h -> 2 (mid), 10h+ -> 3 (dark)
    */
-  cycleContribution(date) {
-    const dateKey = this.formatDateKey(date);
-    
-    if (!this.data[dateKey]) {
-      this.data[dateKey] = { level: 0, lastUpdated: null };
-    }
+  hoursToLevel(hours) {
+    if (hours <= 0) return 0;
+    if (hours < 6) return 1;
+    if (hours < 10) return 2;
+    return 3;
+  }
 
-    // Cycle through levels: 0 -> 1 -> 2 -> 3 -> 4 -> 0
-    this.data[dateKey].level = (this.data[dateKey].level + 1) % 5;
-    
-    if (this.data[dateKey].level === 0) {
-      this.data[dateKey].lastUpdated = null;
-    } else {
-      this.data[dateKey].lastUpdated = new Date().toISOString();
-    }
+  /**
+   * Set the exact hours for a specific date (owner only)
+   * Derives the color level from the hour count so the grid and the
+   * hover tooltip always agree on the same number.
+   */
+  setContributionHours(date, hours) {
+    const dateKey = this.formatDateKey(date);
+    const numericHours = Math.max(0, Number(hours) || 0);
+
+    this.data[dateKey] = {
+      level: this.hoursToLevel(numericHours),
+      hours: numericHours,
+      lastUpdated: numericHours > 0 ? new Date().toISOString() : null
+    };
 
     // Auto-save will be called by handleCellClick
     return this.data[dateKey];

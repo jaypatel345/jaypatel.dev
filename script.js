@@ -4,20 +4,41 @@
 
 function initAccordions() {
   const toggles = document.querySelectorAll('.work-toggle');
-  
+
   toggles.forEach(toggle => {
     toggle.addEventListener('click', () => {
       const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
-      
+
       // Close all other accordions
       toggles.forEach(otherToggle => {
         if (otherToggle !== toggle) {
           otherToggle.setAttribute('aria-expanded', 'false');
         }
       });
-      
+
       // Toggle current accordion
       toggle.setAttribute('aria-expanded', !isExpanded);
+    });
+  });
+}
+
+// ============================================
+// SHOW MORE / SHOW LESS (project descriptions)
+// ============================================
+
+function initShowMoreButtons() {
+  const buttons = document.querySelectorAll('.show-more-btn');
+
+  buttons.forEach(button => {
+    const more = button.previousElementSibling;
+    const label = button.querySelector('.show-more-label');
+
+    button.addEventListener('click', () => {
+      const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+      button.setAttribute('aria-expanded', !isExpanded);
+      more.classList.toggle('expanded', !isExpanded);
+      label.textContent = isExpanded ? 'show more' : 'show less';
     });
   });
 }
@@ -29,25 +50,63 @@ function initAccordions() {
 function initDarkMode() {
   const themeToggle = document.querySelector('.theme-toggle');
   const body = document.body;
-  
+  let activeTransition = null;
+
   // Check for saved preference or system preference
   const savedTheme = localStorage.getItem('theme');
   const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  
+
   if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
     body.classList.add('dark-mode');
   }
-  
+
   // Toggle dark mode
   themeToggle.addEventListener('click', () => {
-    body.classList.toggle('dark-mode');
-    
-    // Save preference
-    if (body.classList.contains('dark-mode')) {
-      localStorage.setItem('theme', 'dark');
-    } else {
-      localStorage.setItem('theme', 'light');
+    // Ignore clicks while a transition is already playing — starting a
+    // new one mid-flight throws an InvalidStateError.
+    if (activeTransition) return;
+
+    const applyTheme = () => {
+      body.classList.toggle('dark-mode');
+
+      // Save preference
+      if (body.classList.contains('dark-mode')) {
+        localStorage.setItem('theme', 'dark');
+      } else {
+        localStorage.setItem('theme', 'light');
+      }
+    };
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Fall back to an instant switch if the browser can't animate the swap
+    if (!document.startViewTransition || prefersReducedMotion) {
+      applyTheme();
+      return;
     }
+
+    // Expand the new theme outward from the toggle button in a circle
+    const rect = themeToggle.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    const radius = Math.hypot(
+      Math.max(x, window.innerWidth - x),
+      Math.max(y, window.innerHeight - y)
+    );
+
+    const root = document.documentElement;
+    root.style.setProperty('--theme-toggle-x', `${x}px`);
+    root.style.setProperty('--theme-toggle-y', `${y}px`);
+    root.style.setProperty('--theme-toggle-r', `${radius}px`);
+
+    activeTransition = document.startViewTransition(applyTheme);
+    // Any of these can reject (e.g. the transition gets skipped by the
+    // browser); swallow them so they don't surface as unhandled rejections.
+    activeTransition.ready.catch(() => {});
+    activeTransition.updateCallbackDone.catch(() => {});
+    activeTransition.finished
+      .catch(() => {})
+      .finally(() => { activeTransition = null; });
   });
 }
 
@@ -120,6 +179,7 @@ function initContributionTracker() {
 
 document.addEventListener('DOMContentLoaded', () => {
   initAccordions();
+  initShowMoreButtons();
   initDarkMode();
   initWavingHand();
   initContributionTracker();

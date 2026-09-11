@@ -95,12 +95,163 @@ class ContributionCell {
   }
 
   /**
+   * Get (creating if needed) the single shared tooltip element used by all cells
+   */
+  static getTooltipElement() {
+    let tooltip = document.getElementById('contribution-cell-tooltip');
+    if (!tooltip) {
+      tooltip = document.createElement('div');
+      tooltip.id = 'contribution-cell-tooltip';
+      tooltip.style.cssText = `
+        position: fixed;
+        z-index: 10000;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-size: 11px;
+        font-family: inherit;
+        white-space: nowrap;
+        background: #1f2328;
+        color: #fff;
+        pointer-events: none;
+        opacity: 0;
+        transform: translate(-50%, -100%);
+        transition: opacity 0.1s ease;
+      `;
+      document.body.appendChild(tooltip);
+    }
+    return tooltip;
+  }
+
+  /**
+   * Show the shared tooltip positioned above the given cell element
+   */
+  showTooltip(cell) {
+    const tooltip = ContributionCell.getTooltipElement();
+    tooltip.textContent = this.getTooltipText();
+
+    const rect = cell.getBoundingClientRect();
+    const showBelow = rect.top < 32;
+    tooltip.style.left = `${rect.left + rect.width / 2}px`;
+    tooltip.style.top = showBelow ? `${rect.bottom + 8}px` : `${rect.top - 6}px`;
+    tooltip.style.transform = showBelow ? 'translate(-50%, 0)' : 'translate(-50%, -100%)';
+    tooltip.style.opacity = '1';
+  }
+
+  /**
+   * Hide the shared tooltip
+   */
+  static hideTooltip() {
+    const tooltip = document.getElementById('contribution-cell-tooltip');
+    if (tooltip) tooltip.style.opacity = '0';
+  }
+
+  /**
+   * Get (creating if needed) the single shared hour-input popup used by all cells
+   */
+  static getHourInputElement() {
+    let input = document.getElementById('contribution-cell-hour-input');
+    if (!input) {
+      // One-time stylesheet: strips the native number spinner (only
+      // reachable via CSS, not inline styles) and adds a focus glow.
+      const style = document.createElement('style');
+      style.textContent = `
+        #contribution-cell-hour-input::-webkit-outer-spin-button,
+        #contribution-cell-hour-input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+        }
+        #contribution-cell-hour-input {
+          -moz-appearance: textfield;
+        }
+        #contribution-cell-hour-input:focus {
+          outline: none;
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.18), 0 0 0 3px color-mix(in srgb, var(--primary-color) 25%, transparent);
+        }
+      `;
+      document.head.appendChild(style);
+
+      input = document.createElement('input');
+      input.id = 'contribution-cell-hour-input';
+      input.type = 'number';
+      input.min = '0';
+      input.step = '0.5';
+      input.placeholder = 'hrs';
+      input.style.cssText = `
+        position: fixed;
+        z-index: 10001;
+        width: 84px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 2px solid var(--primary-color);
+        background: var(--bg-color);
+        color: var(--text-color);
+        font-size: 18px;
+        font-weight: 600;
+        font-family: inherit;
+        text-align: center;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+        transition: box-shadow 0.15s ease;
+        display: none;
+      `;
+      document.body.appendChild(input);
+    }
+    return input;
+  }
+
+  /**
+   * Open the shared hour-input popup above the cell so the owner can type
+   * an exact hour count; commits on Enter/blur, cancels on Escape.
+   */
+  showHourInput(cell) {
+    const input = ContributionCell.getHourInputElement();
+    const rect = cell.getBoundingClientRect();
+    const showBelow = rect.top < 40;
+
+    input.value = this.contribution.hours ?? '';
+    input.style.left = `${rect.left + rect.width / 2 - 42}px`;
+    input.style.top = showBelow ? `${rect.bottom + 8}px` : `${rect.top - 54}px`;
+    input.style.display = 'block';
+
+    ContributionCell.hideTooltip();
+
+    const commit = () => {
+      input.style.display = 'none';
+      cleanup();
+      const hours = parseFloat(input.value);
+      if (!isNaN(hours) && hours >= 0) {
+        this.onClick(this.date, hours);
+      }
+    };
+
+    const cancel = () => {
+      input.style.display = 'none';
+      cleanup();
+    };
+
+    const onKeydown = (e) => {
+      if (e.key === 'Enter') commit();
+      if (e.key === 'Escape') cancel();
+    };
+
+    const cleanup = () => {
+      input.removeEventListener('blur', commit);
+      input.removeEventListener('keydown', onKeydown);
+    };
+
+    input.addEventListener('blur', commit);
+    input.addEventListener('keydown', onKeydown);
+
+    input.focus();
+    input.select();
+  }
+
+  /**
    * Render the contribution cell
    */
   render() {
     const cell = document.createElement('div');
     cell.className = 'contribution-cell';
-    
+
     // LeetCode-style sizing and spacing
     cell.style.cssText = `
       width: 10px;
@@ -120,17 +271,19 @@ class ContributionCell {
       if (!this.isEditable) {
         cell.style.transform = 'scale(1.1)';
       }
+      this.showTooltip(cell);
     });
 
     cell.addEventListener('mouseleave', () => {
       cell.style.transform = 'scale(1)';
+      ContributionCell.hideTooltip();
     });
 
-    // Click handler for edit mode
+    // Click handler for edit mode: opens an inline input for exact hours
     if (this.isEditable && this.onClick) {
       cell.classList.add('editable');
       cell.addEventListener('click', () => {
-        this.onClick(this.date);
+        this.showHourInput(cell);
       });
     }
 

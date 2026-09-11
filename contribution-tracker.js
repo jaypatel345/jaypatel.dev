@@ -606,14 +606,14 @@ class ContributionTracker {
   }
 
   /**
-   * Handle cell click in edit mode
+   * Handle cell click in edit mode: sets the exact hours entered for that date
    */
-  async handleCellClick(date) {
+  async handleCellClick(date, hours) {
     if (!this.editModeEnabled || !this.isOwner) return;
-    
-    // Cycle through contribution levels
-    const updatedContribution = this.data.cycleContribution(date);
-    
+
+    // Save the exact hours entered (color level is derived from it)
+    const updatedContribution = this.data.setContributionHours(date, hours);
+
     // Automatically save to Firebase
     await this.data.saveData();
     
@@ -741,7 +741,7 @@ class ContributionTracker {
       `;
       
       const instructionText = document.createElement('span');
-      instructionText.textContent = 'Click cells to cycle: ';
+      instructionText.textContent = 'Click a cell to enter hours: ';
       editIndicator.appendChild(instructionText);
       
       // Add color options
