@@ -36,8 +36,9 @@ class ContributionTracker {
     // Wait for Firebase initialization before rendering
     this.data.init().then(() => {
       // Initialize components after data is ready
-      this.initComponents();
       this.initEditMode();
+      this.createMonthButtons();
+      this.initComponents();
       this.render();
       
       // Scroll to current month after everything is rendered
@@ -75,6 +76,38 @@ class ContributionTracker {
       onCellClick: this.handleCellClick.bind(this),
       container: this.gridContainer
     });
+
+    // Now that grid exists, set up button listeners
+    this.setupButtonListeners();
+  }
+
+  /**
+   * Set up event listeners for extend and delete buttons
+   */
+  setupButtonListeners() {
+    if (!this.extendButton || !this.deleteButton) {
+      console.error('Buttons not found during setup');
+      return;
+    }
+
+    // Add event listeners directly
+    this.extendButton.addEventListener('click', () => {
+      console.log('Extend button clicked');
+      if (this.grid && this.grid.autoExtendGrid) {
+        this.grid.autoExtendGrid();
+      }
+    });
+
+    this.deleteButton.addEventListener('click', (e) => {
+      console.log('Delete button clicked');
+      e.preventDefault();
+      e.stopPropagation();
+      if (this.grid && this.grid.removeLastMonth) {
+        this.grid.removeLastMonth();
+      }
+    });
+
+    console.log('Button listeners set up successfully');
   }
 
   /**
@@ -124,6 +157,51 @@ class ContributionTracker {
     });
     
     observer.observe(document.body, { attributes: true });
+  }
+
+  /**
+   * Create month management buttons
+   */
+  createMonthButtons() {
+    // Add extend months button (hidden by default, shown in edit mode)
+    this.extendButton = document.createElement('button');
+    this.extendButton.className = 'extend-button';
+    this.extendButton.textContent = '+';
+    this.extendButton.title = 'Add Month';
+    this.extendButton.style.cssText = `
+      padding: 4px 8px;
+      font-size: 12px;
+      font-family: inherit;
+      border: 1px solid var(--primary-color);
+      background: var(--primary-color);
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-right: 4px;
+      display: none;
+    `;
+
+    // Add delete month button (hidden by default, shown in edit mode)
+    this.deleteButton = document.createElement('button');
+    this.deleteButton.className = 'delete-button';
+    this.deleteButton.textContent = '-';
+    this.deleteButton.title = 'Remove Month';
+    this.deleteButton.style.cssText = `
+      padding: 4px 8px;
+      font-size: 12px;
+      font-family: inherit;
+      border: 1px solid #ef4444;
+      background: #ef4444;
+      color: white;
+      border-radius: 3px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-right: 4px;
+      display: none;
+    `;
+
+    console.log('Month buttons created');
   }
 
   /**
@@ -457,6 +535,11 @@ class ContributionTracker {
       this.editIndicator.style.display = this.editModeEnabled && this.isOwner ? 'flex' : 'none';
     }
     
+    // Show/hide extend and delete buttons (only in edit mode and for owner)
+    const shouldShowButtons = this.editModeEnabled && this.isOwner;
+    this.extendButton.style.display = shouldShowButtons ? 'inline-block' : 'none';
+    this.deleteButton.style.display = shouldShowButtons ? 'inline-block' : 'none';
+    
     // Update grid editability
     this.grid.isEditable = this.isOwner && this.editModeEnabled;
     
@@ -597,6 +680,15 @@ class ContributionTracker {
     this.editButton.style.marginRight = 'auto';
     topBar.appendChild(this.editButton);
 
+    // Add extend and delete buttons (created in createMonthButtons)
+    if (this.extendButton) {
+      topBar.appendChild(this.extendButton);
+    }
+    if (this.deleteButton) {
+      topBar.appendChild(this.deleteButton);
+    }
+    console.log('Month buttons added to top bar');
+
     // Add save button (only visible when edit mode is enabled) - hidden since auto-save
     this.saveButton = document.createElement('button');
     this.saveButton.className = 'save-button';
@@ -663,7 +755,7 @@ class ContributionTracker {
         { level: 2, color: '#40c463', label: '6h+' },
         { level: 3, color: '#30a14e', label: '10h+' }
       ];
-      
+
       colorOptions.forEach(option => {
         const colorBtn = document.createElement('div');
         colorBtn.style.cssText = `
@@ -768,7 +860,7 @@ class ContributionTracker {
       { level: 2, color: '#40c463', label: '6h+' },
       { level: 3, color: '#30a14e', label: '10h+' }
     ];
-    
+
     // Clear existing color options
     const existingOptions = this.editIndicator.querySelectorAll('div[style*="display: flex"]');
     existingOptions.forEach(option => option.remove());

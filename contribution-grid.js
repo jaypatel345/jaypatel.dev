@@ -22,16 +22,10 @@ class ContributionGrid {
     this.rowGap = 16;
     this.rowsPerMonth = 7; // 7 rows per month (like days of week)
     
-    // Date range - show from Oct 2025 to Aug 2026
-    this.startDate = new Date();
-    this.startDate.setFullYear(2025); // Start from 2025
-    this.startDate.setMonth(9); // October (month 9, 0-indexed)
-    this.startDate.setDate(1);
-    
-    this.endDate = new Date();
-    this.endDate.setFullYear(2026); // Show until Aug 2026
-    this.endDate.setMonth(7); // August (month 7, 0-indexed)
-    this.endDate.setDate(31);
+    // Get date range from actual data instead of hardcoding
+    const dateRange = this.data.getDateRange();
+    this.startDate = dateRange.startDate;
+    this.endDate = dateRange.endDate;
     
     console.log('Grid date range:', this.startDate, 'to', this.endDate);
     
@@ -47,6 +41,8 @@ class ContributionGrid {
   init() {
     this.renderGrid();
     this.attachThemeListener();
+    // Removed scroll listener to prevent auto-extension on page load
+    // Users can manually add/remove months using the buttons
   }
 
   /**
@@ -66,7 +62,7 @@ class ContributionGrid {
       gap: ${this.monthGap}px;
       overflow-x: auto;
       overflow-y: hidden;
-      padding: 10px 0;
+      padding: 10px 20px;
       align-items: stretch;
     `;
     
@@ -231,6 +227,32 @@ class ContributionGrid {
   }
 
   /**
+   * Attach scroll listener to detect when reaching the end and auto-extend
+   */
+  attachScrollListener() {
+    let isExtending = false;
+    
+    this.gridWrapper.addEventListener('scroll', () => {
+      if (isExtending) return;
+      
+      const maxScroll = this.gridWrapper.scrollWidth - this.gridWrapper.clientWidth;
+      const currentScroll = this.gridWrapper.scrollLeft;
+      
+      // If scrolled to within 100px of the end, extend the grid
+      if (currentScroll >= maxScroll - 100) {
+        isExtending = true;
+        console.log('Reached end of grid, auto-extending...');
+        this.autoExtendGrid();
+        
+        // Reset flag after extension is complete
+        setTimeout(() => {
+          isExtending = false;
+        }, 500);
+      }
+    });
+  }
+
+  /**
    * Update all cell colors when theme changes
    */
   updateColors() {
@@ -262,6 +284,74 @@ class ContributionGrid {
   }
 
   /**
+   * Auto-extend grid by adding 1 more month when reaching the end
+   */
+  autoExtendGrid() {
+    console.log('Auto-extending grid...');
+    const newEndDate = this.data.autoExtendData();
+    if (newEndDate) {
+      this.endDate = newEndDate;
+      this.renderGrid();
+      
+      // Scroll to the newly added month
+      setTimeout(() => {
+        const months = this.getMonthsInRange();
+        const lastMonthIndex = months.length - 1;
+        const monthContainers = this.gridWrapper.querySelectorAll('.contribution-month-container');
+        const lastMonthContainer = monthContainers[lastMonthIndex];
+        
+        if (lastMonthContainer) {
+          const containerWidth = this.gridWrapper.offsetWidth;
+          const monthWidth = lastMonthContainer.offsetWidth;
+          const scrollPosition = lastMonthContainer.offsetLeft - containerWidth + monthWidth + 20;
+          this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);
+        }
+      }, 100);
+    }
+  }
+
+  /**
+   * Remove the last month from the grid
+   */
+  removeLastMonth() {
+    console.log('Removing last month from grid...');
+    console.log('Current end date before removal:', this.endDate);
+    
+    const newEndDate = this.data.removeLastMonth();
+    if (newEndDate) {
+      console.log('New end date received:', newEndDate);
+      this.endDate = newEndDate;
+      console.log('Updated grid end date to:', this.endDate);
+      console.log('Re-rendering grid...');
+      
+      // Force clear the grid wrapper first
+      this.gridWrapper.innerHTML = '';
+      
+      this.renderGrid();
+      
+      // Scroll to the new last month
+      setTimeout(() => {
+        const months = this.getMonthsInRange();
+        console.log('Months after removal:', months.length);
+        const lastMonthIndex = months.length - 1;
+        const monthContainers = this.gridWrapper.querySelectorAll('.contribution-month-container');
+        console.log('Month containers after removal:', monthContainers.length);
+        const lastMonthContainer = monthContainers[lastMonthIndex];
+        
+        if (lastMonthContainer) {
+          const containerWidth = this.gridWrapper.offsetWidth;
+          const monthWidth = lastMonthContainer.offsetWidth;
+          const scrollPosition = lastMonthContainer.offsetLeft - containerWidth + monthWidth + 20;
+          this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);
+          console.log('Scrolled to new last month');
+        }
+      }, 100);
+    } else {
+      console.log('No new end date returned, grid not updated');
+    }
+  }
+
+  /**
    * Get the grid element
    */
   getElement() {
@@ -269,57 +359,49 @@ class ContributionGrid {
   }
 
   /**
-   * Scroll to Aug 2026 and position it on the right side
+   * Scroll to the last month and position it on the right side
    */
   scrollToCurrentMonth(months) {
-    // Scroll to Aug 2026 instead of current date
-    const targetMonth = 7; // August (month 7, 0-indexed)
-    const targetYear = 2026;
+    // Scroll to the last month in the current date range
+    if (months.length === 0) return;
     
-    console.log('Target date: Aug 2026, Month:', targetMonth, 'Year:', targetYear);
+    const lastMonthIndex = months.length - 1;
+    const lastMonth = months[lastMonthIndex];
     
-    // Find the index of Aug 2026
-    const currentIndex = months.findIndex(month => 
-      month.month === targetMonth && month.year === targetYear
-    );
+    console.log('Target date:', lastMonth.monthName, 'Month:', lastMonth.month, 'Year:', lastMonth.year);
+    console.log('Target month index:', lastMonthIndex);
     
-    console.log('Target month index:', currentIndex);
+    // Get the month container element
+    const monthContainers = this.gridWrapper.querySelectorAll('.contribution-month-container');
+    console.log('Month containers found:', monthContainers.length);
+    const currentMonthContainer = monthContainers[lastMonthIndex];
     
-    if (currentIndex !== -1) {
-      // Get the month container element
-      const monthContainers = this.gridWrapper.querySelectorAll('.contribution-month-container');
-      console.log('Month containers found:', monthContainers.length);
-      const currentMonthContainer = monthContainers[currentIndex];
-      
-      if (currentMonthContainer) {
-        console.log('Current month container found:', currentMonthContainer);
-        // Wait for container to have proper dimensions
-        setTimeout(() => {
-          const containerWidth = this.gridWrapper.offsetWidth;
-          const monthWidth = currentMonthContainer.offsetWidth;
-          
-          console.log('Container width:', containerWidth, 'Month width:', monthWidth);
-          
-          // If container has no width, fallback to scrolling to current month directly
-          if (containerWidth === 0) {
-            this.gridWrapper.scrollLeft = currentMonthContainer.offsetLeft;
-            console.log('Fallback: Container width is 0, scrolling directly to current month');
-            return;
-          }
-          
-          // Calculate position to show Aug 2026 at the end of the visible layout
-          const scrollPosition = currentMonthContainer.offsetLeft - containerWidth + monthWidth + 20;
-          
-          // Use direct scroll assignment for reliability
-          this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);
-          
-          console.log('Scrolling to:', currentMonth, currentYear, 'at position:', scrollPosition, 'container width:', containerWidth, 'month width:', monthWidth);
-        }, 100);
-      } else {
-        console.log('Current month container not found');
-      }
+    if (currentMonthContainer) {
+      console.log('Current month container found:', currentMonthContainer);
+      // Wait for container to have proper dimensions
+      setTimeout(() => {
+        const containerWidth = this.gridWrapper.offsetWidth;
+        const monthWidth = currentMonthContainer.offsetWidth;
+        
+        console.log('Container width:', containerWidth, 'Month width:', monthWidth);
+        
+        // If container has no width, fallback to scrolling to current month directly
+        if (containerWidth === 0) {
+          this.gridWrapper.scrollLeft = currentMonthContainer.offsetLeft;
+          console.log('Fallback: Container width is 0, scrolling directly to current month');
+          return;
+        }
+        
+        // Calculate position to show the last month at the end of the visible layout
+        const scrollPosition = currentMonthContainer.offsetLeft - containerWidth + monthWidth + 40;
+        
+        // Use direct scroll assignment for reliability
+        this.gridWrapper.scrollLeft = Math.max(0, scrollPosition);
+        
+        console.log('Scrolling to:', lastMonth.monthName, 'at position:', scrollPosition, 'container width:', containerWidth, 'month width:', monthWidth);
+      }, 100);
     } else {
-      console.log('Current month not found in months array');
+      console.log('Current month container not found');
     }
   }
 }

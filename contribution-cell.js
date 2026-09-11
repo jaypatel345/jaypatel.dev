@@ -19,13 +19,15 @@ class ContributionCell {
   /**
    * Study time colors (light mode)
    * Level 0: empty, Level 1: light green (2+ hrs), Level 2: mid green (6+ hrs), Level 3: dark green (10+ hrs)
+   * Level 4: coding (light green for coding boxes)
    */
   static getColors() {
     return {
       empty: '#ebedf0',
-      level1: '#9be9a8',  // light green (GitHub level 1)
+     level1: '#9be9a8',  // light green (GitHub level 1)
       level2: '#40c463',  // mid green (GitHub level 2)
-      level3: '#30a14e'   // dark green (GitHub level 3)
+      level3: '#30a14e',   // dark green (GitHub level 3)
+         // light green for coding boxes
     };
   }
 
@@ -37,7 +39,8 @@ class ContributionCell {
       empty: '#161b22',
       level1: '#0e4429',  // light green (2+ hours)
       level2: '#006d32',  // mid green (6+ hours)
-      level3: '#26a641'   // dark green (10+ hours)
+      level3: '#26a641',  // dark green (10+ hours)
+       // light green for coding boxes in dark mode
     };
   }
 
@@ -63,6 +66,7 @@ class ContributionCell {
       case 1: return colors.level1;
       case 2: return colors.level2;
       case 3: return colors.level3;
+      case 4: return colors.coding;  // coding boxes light green
       default: return colors.empty;
     }
   }
@@ -74,11 +78,17 @@ class ContributionCell {
     const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const dateStr = this.date.toLocaleDateString('en-US', options);
     
+    // Show exact hours if available, otherwise show level description
+    if (this.contribution.hours !== null && this.contribution.hours !== undefined) {
+      return `${this.contribution.hours}h on ${dateStr}`;
+    }
+    
     const levelTexts = {
       0: 'No study',
       1: '2h+',
       2: '6h+', 
       3: '10h+'
+
     };
     
     return `${levelTexts[this.contribution.level] || 'No study'} on ${dateStr}`;

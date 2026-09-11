@@ -438,6 +438,10 @@ body {
   background-color: #9be9a8;
 }
 
+.legend-color.coding {
+  background-color: #d4f4d4;
+}
+
 .legend-color.mid {
   background-color: #40c463;
 }
@@ -448,6 +452,10 @@ body {
 
 .dark-mode .legend-color.light {
   background-color: #0e4429;
+}
+
+.dark-mode .legend-color.coding {
+  background-color: #1c6b3a;
 }
 
 .dark-mode .legend-color.mid {
