@@ -23,6 +23,11 @@
     <main class="main-content">
       <header class="header">
         <h1>Hey, I'm Jay<span class="waving-hand">👋</span></h1>
+        <div class="header-music-player">
+          <button class="nav-link music-toggle" id="musicToggle" aria-label="Toggle music">
+            <canvas id="visualizerCanvas" width="96" height="96"></canvas>
+          </button>
+        </div>
         <p class="intro">
           I've been making computers do cool stuff ever since I saw Siri talk. Turns out, asking "how does this work?"
           long enough leads to building your own.
@@ -39,6 +44,33 @@
           <h2>work</h2>
         </div>
         <div class="work-list">
+          <div class="work-item">
+            <button class="work-toggle" aria-expanded="false">
+              <div class="work-header">
+                <span class="company-logo">
+                  <img src="public/techsteck_logo.jpeg" alt="techsteck solutions logo">
+                </span>
+                <div class="work-info">
+                  <div class="work-title-row">
+                    <h3>AI / MERN Stack Intern</h3>
+                  </div>
+                  <div class="work-meta">
+                    <span>Techsteck Solutions</span>
+                    <span>•</span>
+                    <span>sep 2026 - present</span>
+                  </div>
+                </div>
+              </div>
+              <span class="chevron">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </span>
+            </button>
+            <div class="work-details">
+              <p>developing and maintaining backend services for a B2B Taxi Marketplace Platform using PHP, Laravel, REST APIs, and PostgreSQL, supporting core booking and marketplace workflows. collaborating on API design and database schema decisions to support multi-tenant marketplace operations across driver, rider, and admin roles.</p>
+            </div>
+          </div>
           <div class="work-item">
             <button class="work-toggle" aria-expanded="false">
               <div class="work-header">
@@ -85,10 +117,10 @@
                 </svg>
               </a>
             </div>
-            <p>LangGraph tool-calling agent (Groq) answers news questions via live category + semantic vector search (pgvector, sentence-transformers), with full conversation memory over WebSockets.</p>
+            <p>architected a LangGraph tool-calling news agent (FastAPI + WebSockets) with 4-way LLM failover across models/API keys, routing between internal metadata/vector search and a live web-search fallback to stay current without over-calling the LLM.</p>
             <div class="project-more">
-              <p>ingestion pipeline dedupes articles by canonical URL/title, extracts named entities, and auto-classifies categories on a scheduled job (APScheduler + GitHub Actions).</p>
-              <p>async FastAPI/PostgreSQL backend with JWT + guest auth and multi-model, multi-key LLM fallback for rate-limit resilience — Next.js frontend.</p>
+              <p>built a hybrid retrieval pipeline combining entity-based metadata search (alias/entity canonicalization, e.g. Meta ↔ Facebook, Alphabet ↔ Google) with pgvector cosine-similarity semantic search, ranked by entity match count and recency.</p>
+              <p>designed an async, timezone-aware cron pipeline (APScheduler) orchestrating ingestion, popularity ranking, LLM summarization, TTS audio pre-warming, and embedding backfill as isolated stages, so a single stage's failure (e.g. rate limits) never blocks the rest.</p>
             </div>
             <button class="show-more-btn" aria-expanded="false">
               <span class="show-more-label">show more</span>
@@ -110,7 +142,19 @@
                 </svg>
               </a>
             </div>
-            <p>production-ready AI prompt platform with modular backend, scalable APIs, and async job processing. implemented JWT auth, Redis caching, queue-based workers, and CI/CD pipelines. reduced auth response times from 3s to 5ms.</p>
+            <p>built a production-ready AI prompt platform with a modular Express backend, dual MongoDB/PostgreSQL persistence, and BullMQ/Redis-backed async job queues with a dedicated worker process for AI prompt enhancement and multi-file context processing.</p>
+            <div class="project-more">
+              <p>built a retrieval-augmented (RAG) AI assistant with a custom relevance-ranking retrieval pipeline that grounds Groq/OpenAI LLM responses in site-specific context, reducing hallucinated answers.</p>
+              <p>implemented JWT authentication with short-lived access tokens, TTL-indexed refresh tokens, and Google OAuth; eliminated a full collection scan on the conversation-history API via a compound MongoDB index, cutting documents examined per query by ~99.9% (50,023 → 50) at 50k-message scale.</p>
+            </div>
+            <button class="show-more-btn" aria-expanded="false">
+              <span class="show-more-label">show more</span>
+              <span class="chevron">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m6 9 6 6 6-6"></path>
+                </svg>
+              </span>
+            </button>
           </div>
 
           <div class="project-item">
@@ -209,5 +253,13 @@
   </div>
 
   <script src="script.js"></script>
+  
+  <!-- Music Player Audio -->
+  <audio id="audioPlayer" loop crossorigin="anonymous">
+    <source src="public/ambient-432hz.m4a" type="audio/mp4">
+    Your browser does not support the audio element.
+  </audio>
+  
+  <script src="music-player.js"></script>
 </body>
 </html>

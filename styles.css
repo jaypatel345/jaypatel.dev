@@ -63,6 +63,7 @@ body {
 
 .header {
   margin-bottom: 3rem;
+  position: relative;
 }
 
 .header h1 {
@@ -72,6 +73,24 @@ body {
   font-style: italic;
   margin-bottom: 1rem;
   line-height: 1.3;
+}
+
+.header-music-player {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.music-icon-static {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+
+#visualizerCanvas {
+  width: 48px;
+  height: 48px;
+  display: block;
 }
 
 .waving-hand {
@@ -815,6 +834,12 @@ body {
   background-color: var(--border-color);
 }
 
+.music-toggle:hover {
+  color: var(--text-muted) !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
 .nav-link svg {
   display: block;
 }
@@ -895,6 +920,26 @@ body.dark-mode .collaborator-badge {
   background-color: var(--border-color);
   border-color: var(--border-color);
 }
+
+/* ============================================
+   MUSIC PLAYER
+   ============================================ */
+
+.music-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 12px;
+  background-color: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 0;
+}
+
+
 
 /* ============================================
    RESPONSIVE
