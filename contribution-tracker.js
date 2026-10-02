@@ -251,6 +251,7 @@ class ContributionTracker {
 
     // Create modal content
     const modalContent = document.createElement('div');
+    modalContent.className = 'auth-card';
     modalContent.style.cssText = `
       background: var(--bg-color);
       padding: 24px;
@@ -262,7 +263,8 @@ class ContributionTracker {
 
     // Create title
     const title = document.createElement('h3');
-    title.textContent = 'Enter Secret Key';
+    title.textContent = 'Enter Key';
+    title.className = 'auth-title';
     title.style.cssText = `
       margin: 0 0 16px 0;
       font-size: 16px;
@@ -273,7 +275,8 @@ class ContributionTracker {
     // Create input
     const input = document.createElement('input');
     input.type = 'password';
-    input.placeholder = 'Secret key';
+    input.placeholder = 'Key';
+    input.className = 'auth-input';
     input.style.cssText = `
       width: 100%;
       padding: 8px 12px;
@@ -330,6 +333,7 @@ class ContributionTracker {
     // Create cancel button
     const cancelButton = document.createElement('button');
     cancelButton.textContent = 'Cancel';
+    cancelButton.className = 'auth-btn';
     cancelButton.style.cssText = `
       padding: 6px 12px;
       font-size: 12px;
@@ -345,6 +349,7 @@ class ContributionTracker {
     // Create submit button
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Submit';
+    submitButton.className = 'auth-btn primary';
     submitButton.style.cssText = `
       padding: 6px 12px;
       font-size: 12px;
@@ -466,6 +471,7 @@ class ContributionTracker {
     `;
 
     const modalContent = document.createElement('div');
+    modalContent.className = 'auth-card';
     modalContent.style.cssText = `
       background: var(--bg-color);
       padding: 24px;
@@ -478,6 +484,7 @@ class ContributionTracker {
 
     const title = document.createElement('h3');
     title.textContent = 'Too Many Attempts';
+    title.className = 'auth-title';
     title.style.cssText = `
       margin: 0 0 16px 0;
       font-size: 16px;
@@ -487,6 +494,7 @@ class ContributionTracker {
 
     const message = document.createElement('p');
     message.textContent = `Please try again in ${seconds} seconds.`;
+    message.className = 'auth-message';
     message.style.cssText = `
       margin: 0 0 16px 0;
       font-size: 14px;
@@ -495,6 +503,7 @@ class ContributionTracker {
 
     const okButton = document.createElement('button');
     okButton.textContent = 'OK';
+    okButton.className = 'auth-btn primary';
     okButton.style.cssText = `
       padding: 6px 12px;
       font-size: 12px;
@@ -570,6 +579,7 @@ class ContributionTracker {
   showSaveNotification() {
     const notification = document.createElement('div');
     notification.textContent = 'Data saved!';
+    notification.className = 'save-toast';
     notification.style.cssText = `
       position: fixed;
       bottom: 20px;
@@ -638,11 +648,8 @@ class ContributionTracker {
       // Find last updated element by its content pattern
       const statElements = topBar.querySelectorAll('div');
       statElements.forEach(el => {
-        if (el.textContent.includes('Last Updated:')) {
-          el.innerHTML = `<span style="color: var(--text-light);">Last Updated:</span> ${this.formatDate(stats.lastUpdated)}`;
-        }
-        if (el.textContent.includes('Total Active Days:')) {
-          el.innerHTML = `<span style="color: var(--text-light);">Total Active Days:</span> ${stats.totalActiveDays}`;
+        if (el.classList.contains('stat-pill')) {
+          el.innerHTML = `<span class="stat-label">Total Hours</span><strong class="stat-value">${this.formatHours(stats.totalHours)}</strong>`;
         }
       });
     }
@@ -716,13 +723,10 @@ class ContributionTracker {
     
     // Add stats
     const stats = this.data.getStatistics();
-    const lastUpdated = document.createElement('div');
-    lastUpdated.innerHTML = `<span style="color: var(--text-light);">Last Updated:</span> ${this.formatDate(stats.lastUpdated)}`;
-    
     const totalDays = document.createElement('div');
-    totalDays.innerHTML = `<span style="color: var(--text-light);">Total Active Days:</span> ${stats.totalActiveDays}`;
+    totalDays.className = 'stat-pill';
+    totalDays.innerHTML = `<span class="stat-label">Total Hours</span><strong class="stat-value">${this.formatHours(stats.totalHours)}</strong>`;
     
-    topBar.appendChild(lastUpdated);
     topBar.appendChild(totalDays);
     
     mainContainer.appendChild(topBar);
@@ -747,13 +751,13 @@ class ContributionTracker {
       // Add color options
       const isDarkMode = document.body.classList.contains('dark-mode');
       const colorOptions = isDarkMode ? [
-        { level: 1, color: '#0e4429', label: '2h+' },
-        { level: 2, color: '#006d32', label: '6h+' },
-        { level: 3, color: '#26a641', label: '10h+' }
+        { level: 1, color: '#38383d', label: '2h+' },
+        { level: 2, color: '#606066', label: '6h+' },
+        { level: 3, color: '#9c9ca2', label: '10h+' }
       ] : [
-        { level: 1, color: '#9be9a8', label: '2h+' },
-        { level: 2, color: '#40c463', label: '6h+' },
-        { level: 3, color: '#30a14e', label: '10h+' }
+        { level: 1, color: '#d2d2d2', label: '2h+' },
+        { level: 2, color: '#a6a6a6', label: '6h+' },
+        { level: 3, color: '#707070', label: '10h+' }
       ];
 
       colorOptions.forEach(option => {
@@ -799,6 +803,14 @@ class ContributionTracker {
     
     // Add custom styles
     this.addStyles();
+  }
+
+  /**
+   * Format total hours for display, e.g. 1,234h (one decimal only when needed)
+   */
+  formatHours(hours) {
+    const rounded = Math.round((hours || 0) * 10) / 10;
+    return `${rounded.toLocaleString('en-US')}h`;
   }
 
   /**
@@ -852,13 +864,13 @@ class ContributionTracker {
     
     const isDarkMode = document.body.classList.contains('dark-mode');
     const colorOptions = isDarkMode ? [
-      { level: 1, color: '#0e4429', label: '2h+' },
-      { level: 2, color: '#006d32', label: '6h+' },
-      { level: 3, color: '#26a641', label: '10h+' }
+      { level: 1, color: '#38383d', label: '2h+' },
+      { level: 2, color: '#606066', label: '6h+' },
+      { level: 3, color: '#9c9ca2', label: '10h+' }
     ] : [
-      { level: 1, color: '#9be9a8', label: '2h+' },
-      { level: 2, color: '#40c463', label: '6h+' },
-      { level: 3, color: '#30a14e', label: '10h+' }
+      { level: 1, color: '#d2d2d2', label: '2h+' },
+      { level: 2, color: '#a6a6a6', label: '6h+' },
+      { level: 3, color: '#707070', label: '10h+' }
     ];
 
     // Clear existing color options

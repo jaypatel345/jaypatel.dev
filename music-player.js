@@ -1,4 +1,4 @@
-// Music Player with Circular 3D Audio Visualizer
+// Music Player with a four-bar audio visualizer
 document.addEventListener('DOMContentLoaded', function() {
   const musicToggle = document.getElementById('musicToggle');
   const audioPlayer = document.getElementById('audioPlayer');
@@ -12,33 +12,11 @@ document.addEventListener('DOMContentLoaded', function() {
   let animationId = null;
 
 
-  // Muted ring color (gray), glyph stays full theme color
-  function ringColor() {
-    return document.body.classList.contains('dark-mode')
-      ? 'rgba(229, 229, 229, 0.4)'
-      : 'rgba(0, 0, 0, 0.3)';
+  // Black in light mode, white in dark mode
+  function barColor() {
+    return document.body.classList.contains('dark-mode') ? '#ffffff' : '#000000';
   }
 
-  function themeColor() {
-    return document.body.classList.contains('dark-mode') ? '#e5e5e5' : '#000000';
-  }
-
-  // Center play / pause glyph
-  function drawGlyph(cx, cy, color) {
-    ctx.fillStyle = color;
-    if (isPlaying) {
-      ctx.fillRect(cx - 6, cy - 7, 4, 14);
-      ctx.fillRect(cx + 2, cy - 7, 4, 14);
-    } else {
-      ctx.beginPath();
-      ctx.moveTo(cx - 4.5, cy - 8);
-      ctx.lineTo(cx + 8, cy);
-      ctx.lineTo(cx - 4.5, cy + 8);
-      ctx.closePath();
-      ctx.fill();
-    }
-  }
-  
   // Check if audio is supported
   if (!audioPlayer.canPlayType('audio/mp4')) {
     console.warn('AAC/m4a format may not be supported in this browser');
@@ -56,7 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
       source.connect(analyser);
       analyser.connect(audioContext.destination);
       
-      analyser.fftSize = 128;
+      analyser.fftSize = 512;
+      analyser.smoothingTimeConstant = 0.3; // low smoothing so the bars flicker quickly with the audio
       const bufferLength = analyser.frequencyBinCount;
       dataArray = new Uint8Array(bufferLength);
       
@@ -66,75 +45,78 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
   
-  // Draw static icon: plain circle + play/pause glyph
-  function drawStaticIcon() {
+  // Four vertical bars: tiny dot-like lines at rest that stretch with the music.
+  // Each bar grows up and down from the center line.
+  const BAR_COUNT = 4;
+  const BAR_WIDTH = 6;
+  const BAR_GAP = 7;
+  const MIN_HEIGHT = 13;                  // a little taller than wide: tiny rounded lines that read as dots
+  const IDLE_HEIGHTS = [MIN_HEIGHT, MIN_HEIGHT, MIN_HEIGHT, MIN_HEIGHT];
+  const MAX_HEIGHTS = [36, 52, 52, 36];   // inner bars can stretch further than the outer ones
+  const FOLLOW_SPEED = 0.65;              // 0..1, how quickly bars chase the audio (higher = faster flicker)
+  let barHeights = IDLE_HEIGHTS.slice();
+
+  // Bars are filled capsules (two arcs) instead of stroked lines: a zero-length
+  // stroked line is not drawn by every browser, a filled capsule always is.
+  function drawBars(heights) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const centerX = canvas.width / 2;
     const centerY = canvas.height / 2;
-    const strokeColor = themeColor();
+    const radius = BAR_WIDTH / 2;
 
-    const radius = 26;
+    ctx.fillStyle = barColor();
 
-    ctx.beginPath();
-    ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
-    ctx.strokeStyle = ringColor();
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
+    for (let i = 0; i < BAR_COUNT; i++) {
+      const x = centerX + (i - (BAR_COUNT - 1) / 2) * (BAR_WIDTH + BAR_GAP);
+      const half = Math.max(heights[i] - BAR_WIDTH, 0) / 2;
 
-    drawGlyph(centerX, centerY, strokeColor);
+      ctx.beginPath();
+      ctx.arc(x, centerY - half, radius, Math.PI, 0);
+      ctx.arc(x, centerY + half, radius, 0, Math.PI);
+      ctx.closePath();
+      ctx.fill();
+    }
   }
 
-  // Circular visualization (black only, no movement)
+  // Resting state
+  function drawStaticIcon() {
+    barHeights = IDLE_HEIGHTS.slice();
+    drawBars(barHeights);
+  }
+
+  // Average of a slice of the frequency data, 0..1
+  function bandLevel(from, to) {
+    let sum = 0;
+    for (let i = from; i < to; i++) sum += dataArray[i];
+    return sum / (to - from) / 255;
+  }
+
+  // Each bar follows its own slice of the spectrum
   function visualize() {
     if (!isPlaying) return;
-    
+
     animationId = requestAnimationFrame(visualize);
-    
+
     if (analyser) {
       analyser.getByteFrequencyData(dataArray);
-      
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const baseRadius = 21;
-      const barCount = 32;
-      
-      // Get theme color for better visibility
-      const strokeColor = ringColor();
-      
-      // Use frequency data for circular visualization
-      for (let i = 0; i < barCount; i++) {
-        const angle = (i / barCount) * Math.PI * 2;
-        
-        // Get frequency value for this bar
-        const dataIndex = Math.floor((i / barCount) * dataArray.length);
-        const frequencyValue = dataArray[dataIndex];
-        
-        // Calculate bar length based on frequency
-        const barLength = 4 + (frequencyValue / 255) * 22;
-        
-        // Fixed radius (no 3D movement)
-        const radius = baseRadius;
-        
-        const x1 = centerX + Math.cos(angle) * radius;
-        const y1 = centerY + Math.sin(angle) * radius;
-        const x2 = centerX + Math.cos(angle) * (radius + barLength);
-        const y2 = centerY + Math.sin(angle) * (radius + barLength);
-        
-        // Theme color (black or white based on mode)
-        ctx.beginPath();
-        ctx.moveTo(x1, y1);
-        ctx.lineTo(x2, y2);
-        ctx.strokeStyle = strokeColor;
-        ctx.lineWidth = 2.2;
-        ctx.lineCap = 'round';
-        ctx.stroke();
+
+      // The part of the spectrum where this track has energy
+      // (about 0-2kHz at 86Hz per bin), split across the four bars
+      const levels = [
+        bandLevel(0, 3),
+        bandLevel(3, 7),
+        bandLevel(7, 13),
+        bandLevel(13, 25)
+      ];
+      const gains = [0.9, 1.0, 1.3, 2.0];
+
+      for (let i = 0; i < BAR_COUNT; i++) {
+        const target = MIN_HEIGHT + Math.min(1, levels[i] * gains[i]) * (MAX_HEIGHTS[i] - MIN_HEIGHT);
+        barHeights[i] += (target - barHeights[i]) * FOLLOW_SPEED;
       }
 
-      // Pause glyph, no glow / no backing circle
-      drawGlyph(centerX, centerY, themeColor());
+      drawBars(barHeights);
     }
   }
   

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="About Jay Patel, an AI and full-stack engineer based in Surat, India.">
+  <title>About | Jay Patel</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com/">
+  <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
+  <script src="auth-config.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="contribution-data.js"></script>
+  <script src="contribution-cell.js"></script>
+  <script src="contribution-grid.js"></script>
+  <script src="contribution-tracker.js"></script>
+</head>
+<body>
+  <div class="bg-grid" aria-hidden="true">
+    <svg width="100%" height="100%">
+      <defs>
+        <pattern id="grid-pattern" width="70" height="70" patternUnits="userSpaceOnUse">
+          <path d="M 80 0 L 0 0 0 80" fill="none" stroke="currentColor" stroke-width="1"></path>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid-pattern)"></rect>
+    </svg>
+  </div>
+
+  <nav class="top-nav">
+    <div class="nav-fade" aria-hidden="true"></div>
+    <div class="nav-inner">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html" class="active">About</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Fixed controls, bottom-right corner -->
+  <div class="side-controls">
+    <button class="side-btn theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
+          </svg>
+        </button>
+    <button class="side-btn music-toggle" id="musicToggle" aria-label="Toggle music">
+          <canvas id="visualizerCanvas" width="96" height="96"></canvas>
+        </button>
+  </div>
+
+  <main>
+    <div class="page">
+      <div class="hero-top">
+        <img class="avatar" src="public/jay.webp" alt="Jay Patel">
+        <div>
+          <h1>About me</h1>
+          <p class="role">Surat, India</p>
+        </div>
+      </div>
+
+      <div class="prose">
+        <p>I'm Jay, an AI and full-stack engineer. I've been making computers do cool stuff ever since I saw Siri talk. Turns out, asking "how does this work?" long enough leads to building your own.</p>
+        <p>I build production AI applications end to end: LLM agents with LangGraph, retrieval pipelines on pgvector, async job queues, and the MERN or Python/FastAPI backends and Next.js frontends around them. I care about the unglamorous parts too, like indexing, caching, auth and failure handling.</p>
+        <p>Right now I'm working at Techsteck Solutions on backend services for a B2B taxi marketplace, and building side projects like Newsbit and PromptX in the evenings.</p>
+      </div>
+
+      <section class="block">
+        <h2 class="eyebrow">Skills</h2>
+        <dl class="skills">
+          <div><dt>Languages</dt><dd>JavaScript, TypeScript, Python, C++, SQL</dd></div>
+          <div><dt>Backend &amp; APIs</dt><dd>Node.js, Express.js, FastAPI, SQLAlchemy, REST, WebSockets, Microservices</dd></div>
+          <div><dt>AI / ML</dt><dd>LLMs, RAG, LangChain, LangGraph, Embeddings, Vector Databases, MCP, Voice APIs</dd></div>
+          <div><dt>Databases</dt><dd>PostgreSQL, MongoDB, MySQL, Redis, pgvector</dd></div>
+          <div><dt>System Design</dt><dd>LLD, Kafka, RabbitMQ, BullMQ</dd></div>
+          <div><dt>DevOps</dt><dd>Docker, GitHub Actions, AWS, CI/CD</dd></div>
+          <div><dt>Frontend</dt><dd>React.js, Next.js, Tailwind CSS</dd></div>
+          <div><dt>Core CS</dt><dd>DSA, DBMS, Operating Systems, OOP</dd></div>
+        </dl>
+      </section>
+
+      <section class="block">
+        <div class="card quote-visitor">
+          <div class="quote-side">
+            <svg class="quote-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path></svg>
+            <div id="quoteRotor" class="quote-rotor" aria-live="off"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="block">
+        <a class="resume-pill big" href="public/JayPatel_CV.pdf" download="JayPatel_CV.pdf">Download resume
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>
+        </a>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-left">
+          <span>© 2026 Jay Patel.</span>
+          <span class="footer-sep"></span>
+          <a href="index.html">Home</a>
+          <a href="projects.html">Projects</a>
+          <a href="about.html">About</a>
+        </div>
+        <div class="footer-right">
+          <a href="https://x.com/JayPatel3405" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
+          </a>
+          <a href="mailto:jaypatel210776@gmail.com" aria-label="Email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+          </a>
+          <a href="http://github.com/jaypatel345" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+          </a>
+        </div>
+      </footer>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
+  <script src="script.js"></script>
+  <audio id="audioPlayer" loop crossorigin="anonymous">
+    <source src="public/ambient-432hz.m4a" type="audio/mp4">
+  </audio>
+  <script src="music-player.js"></script>
+</body>
+</html>

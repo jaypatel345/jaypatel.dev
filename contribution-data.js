@@ -289,6 +289,7 @@ class ContributionData {
   getStatistics() {
     const today = new Date();
     let totalActiveDays = 0;
+    let totalHours = 0;
     let currentStreak = 0;
     let maxStreak = 0;
     let tempStreak = 0;
@@ -299,6 +300,8 @@ class ContributionData {
     
     for (let i = 0; i < sortedDates.length; i++) {
       const entry = this.data[sortedDates[i]];
+      totalHours += Number(entry.hours) || 0;
+
       if (entry.level > 0) {
         totalActiveDays++;
         tempStreak++;
@@ -328,6 +331,7 @@ class ContributionData {
 
     return {
       totalActiveDays,
+      totalHours,
       currentStreak,
       maxStreak,
       lastUpdated

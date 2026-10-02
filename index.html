@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Personal portfolio of Jay Patel, an AI and full-stack engineer.">
-  <title>Jay Patel</title>
+  <title>Jay Patel | AI &amp; Full-Stack Engineer</title>
   <link rel="preconnect" href="https://fonts.googleapis.com/">
   <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;450;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-database-compat.js"></script>
@@ -19,247 +19,352 @@
   <script src="contribution-tracker.js"></script>
 </head>
 <body>
-  <div class="container">
-    <main class="main-content">
-      <header class="header">
-        <h1>Hey, I'm Jay<span class="waving-hand">👋</span></h1>
-        <div class="header-music-player">
-          <button class="nav-link music-toggle" id="musicToggle" aria-label="Toggle music">
-            <canvas id="visualizerCanvas" width="96" height="96"></canvas>
-          </button>
-        </div>
-        <p class="intro">
-          I've been making computers do cool stuff ever since I saw Siri talk. Turns out, asking "how does this work?"
-          long enough leads to building your own.
-        </p>
-        <a class="resume-link" href="public/JayPatel_CV.pdf" download="JayPatel_CV.pdf">resume -&gt;</a>
-      </header>
-
-      <section class="section">
-        <div class="status-badge">
-          <span class="badge">busy building</span>
-        </div>
-        <div class="section-header">
-          <div class="divider"></div>
-          <h2>work</h2>
-        </div>
-        <div class="work-list">
-          <div class="work-item">
-            <button class="work-toggle" aria-expanded="false">
-              <div class="work-header">
-                <span class="company-logo">
-                  <img src="public/techsteck_logo.jpeg" alt="techsteck solutions logo">
-                </span>
-                <div class="work-info">
-                  <div class="work-title-row">
-                    <h3>AI / MERN Stack Intern</h3>
-                  </div>
-                  <div class="work-meta">
-                    <span>Techsteck Solutions</span>
-                    <span>•</span>
-                    <span>sep 2026 - present</span>
-                  </div>
-                </div>
-              </div>
-              <span class="chevron">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </span>
-            </button>
-            <div class="work-details">
-              <p>developing and maintaining backend services for a B2B Taxi Marketplace Platform using PHP, Laravel, REST APIs, and PostgreSQL, supporting core booking and marketplace workflows. collaborating on API design and database schema decisions to support multi-tenant marketplace operations across driver, rider, and admin roles.</p>
-            </div>
-          </div>
-          <div class="work-item">
-            <button class="work-toggle" aria-expanded="false">
-              <div class="work-header">
-                <span class="company-logo">
-                  <img src="public/agevole_innovation_logo.jpeg" alt="agevole innovation logo">
-                </span>
-                <div class="work-info">
-                  <div class="work-title-row">
-                    <h3>full stack intern</h3>
-                  </div>
-                  <div class="work-meta">
-                    <span>agevole innovation pvt. ltd</span>
-                    <span>•</span>
-                    <span>jan 2026 - jun 2026</span>
-                  </div>
-                </div>
-              </div>
-              <span class="chevron">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </span>
-            </button>
-            <div class="work-details">
-              <p>built MERN stack applications with JWT auth and role-based access. optimized database queries and fixed production bugs. collaborated through git in an agile environment.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <div class="divider"></div>
-          <h2>projects</h2>
-        </div>
-        <div class="projects-list">
-          <div class="project-item">
-            <div class="project-header">
-              <a href="https://www.newsbit.in/" target="_blank" rel="noopener noreferrer">Newsbit AI</a>
-              <a href="https://github.com/jaypatel345/newsbit" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-                  <path d="M9 18c-4.51 2-5-2-7-2"></path>
-                </svg>
-              </a>
-            </div>
-            <p>architected a LangGraph tool-calling news agent (FastAPI + WebSockets) with 4-way LLM failover across models/API keys, routing between internal metadata/vector search and a live web-search fallback to stay current without over-calling the LLM.</p>
-            <div class="project-more">
-              <p>built a hybrid retrieval pipeline combining entity-based metadata search (alias/entity canonicalization, e.g. Meta ↔ Facebook, Alphabet ↔ Google) with pgvector cosine-similarity semantic search, ranked by entity match count and recency.</p>
-              <p>designed an async, timezone-aware cron pipeline (APScheduler) orchestrating ingestion, popularity ranking, LLM summarization, TTS audio pre-warming, and embedding backfill as isolated stages, so a single stage's failure (e.g. rate limits) never blocks the rest.</p>
-            </div>
-            <button class="show-more-btn" aria-expanded="false">
-              <span class="show-more-label">show more</span>
-              <span class="chevron">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </span>
-            </button>
-          </div>
-
-          <div class="project-item">
-            <div class="project-header">
-              <a href="http://promptx.co.in" target="_blank" rel="noopener noreferrer">PromptX</a>
-              <a href="https://github.com/jaypatel345/PromptX" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-                  <path d="M9 18c-4.51 2-5-2-7-2"></path>
-                </svg>
-              </a>
-            </div>
-            <p>built a production-ready AI prompt platform with a modular Express backend, dual MongoDB/PostgreSQL persistence, and BullMQ/Redis-backed async job queues with a dedicated worker process for AI prompt enhancement and multi-file context processing.</p>
-            <div class="project-more">
-              <p>built a retrieval-augmented (RAG) AI assistant with a custom relevance-ranking retrieval pipeline that grounds Groq/OpenAI LLM responses in site-specific context, reducing hallucinated answers.</p>
-              <p>implemented JWT authentication with short-lived access tokens, TTL-indexed refresh tokens, and Google OAuth; eliminated a full collection scan on the conversation-history API via a compound MongoDB index, cutting documents examined per query by ~99.9% (50,023 → 50) at 50k-message scale.</p>
-            </div>
-            <button class="show-more-btn" aria-expanded="false">
-              <span class="show-more-label">show more</span>
-              <span class="chevron">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="m6 9 6 6 6-6"></path>
-                </svg>
-              </span>
-            </button>
-          </div>
-
-          <div class="project-item">
-            <div class="project-header">
-              <a href="https://style-nest-frontend-rho.vercel.app" target="_blank" rel="noopener noreferrer">StyleNest</a>
-              <a href="https://github.com/jaypatel345/StyleNest" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-                  <path d="M9 18c-4.51 2-5-2-7-2"></path>
-                </svg>
-              </a>
-            </div>
-            <p>full-stack e-commerce platform with product, cart, checkout, and admin workflows. integrated Razorpay payments, Cloudinary storage, RBAC controls, and Redis caching. reduced API response times from 3s to 7ms.</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <div class="divider"></div>
-          <h2>tech</h2>
-        </div>
-        <div class="tech-grid">
-          <div>JavaScript</div>
-          <div>TypeScript</div>
-          <div>Python</div>
-          <div>React.js</div>
-          <div>Next.js</div>
-          <div>FastAPI</div>
-          <div>LangGraph</div>
-          <div>AI Agents</div>
-          <div>C++</div>
-          <div>SQL</div>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <div class="divider"></div>
-          <h2>coding</h2>
-        </div>
-        <div id="contribution-tracker" class="contribution-tracker-section"></div>
-      </section>
-
-      <section class="section">
-        <div class="section-header">
-          <div class="divider"></div>
-          <h2>now</h2>
-        </div>
-        <div class="now-content">
-          <p>making things that should exist but don't yet. simple is hard, but worth it.</p>
-        </div>
-      </section>
-    </main>
-
-    <div class="bottom-nav">
-      <div class="nav-container">
-        <a class="nav-link" href="http://github.com/jaypatel345" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-            <path d="M9 18c-4.51 2-5-2-7-2"></path>
-          </svg>
-        </a>
-        <a class="nav-link" href="http://linkedin.com/in/jaypatel3405" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-            <rect width="4" height="12" x="2" y="9"></rect>
-            <circle cx="4" cy="4" r="2"></circle>
-          </svg>
-        </a>
-        <a class="nav-link" href="mailto:jaypatel210776@gmail.com" aria-label="Email">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
-            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-          </svg>
-        </a>
-        <a class="nav-link" href="https://leetcode.com/u/jay-patel-8" target="_blank" rel="noopener noreferrer" aria-label="LeetCode">
-          <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor">
-            <path d="M13.483 0a1.374 1.374 0 0 0 -0.961 0.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0 -1.209 2.104 5.35 5.35 0 0 0 -0.125 0.513 5.527 5.527 0 0 0 0.062 2.362 5.83 5.83 0 0 0 0.349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193 0.039 0.038c2.248 2.165 5.852 2.133 8.063 -0.074l2.396 -2.392c0.54 -0.54 0.54 -1.414 0.003 -1.955a1.378 1.378 0 0 0 -1.951 -0.003l-2.396 2.392a3.021 3.021 0 0 1 -4.205 0.038l-0.02 -0.019 -4.276 -4.193c-0.652 -0.64 -0.972 -1.469 -0.948 -2.263a2.68 2.68 0 0 1 0.066 -0.523 2.545 2.545 0 0 1 0.619 -1.164L9.13 8.114c1.058 -1.134 3.204 -1.27 4.43 -0.278l3.501 2.831c0.593 0.48 1.461 0.387 1.94 -0.207a1.384 1.384 0 0 0 -0.207 -1.943l-3.5 -2.831c-0.8 -0.647 -1.766 -1.045 -2.774 -1.202l2.015 -2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0 -1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38 -1.382 1.38 1.38 0 0 0 -1.38 -1.382z" stroke-width="1"></path>
-          </svg>
-        </a>
-        <a class="nav-link" href="https://x.com/JayPatel3405" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4l11.733 16h4.267l-11.733 -16z"></path>
-            <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path>
-          </svg>
-        </a>
-        <div class="nav-divider"></div>
-        <button class="nav-link theme-toggle" aria-label="Switch to dark mode">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
-          </svg>
-        </button>
-      </div>
-    </div>
+  <!-- Background grid -->
+  <div class="bg-grid" aria-hidden="true">
+    <svg width="100%" height="100%">
+      <defs>
+        <pattern id="grid-pattern" width="70" height="70" patternUnits="userSpaceOnUse">
+          <path d="M 80 0 L 0 0 0 80" fill="none" stroke="currentColor" stroke-width="1"></path>
+        </pattern>
+      </defs>
+      <rect width="100%" height="100%" fill="url(#grid-pattern)"></rect>
+    </svg>
   </div>
 
+  <!-- Top nav -->
+  <nav class="top-nav">
+    <div class="nav-fade" aria-hidden="true"></div>
+    <div class="nav-inner">
+      <div class="nav-links">
+        <a href="index.html" class="active">Home</a>
+        <a href="projects.html">Projects</a>
+        <a href="about.html">About</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Fixed controls, bottom-right corner -->
+  <div class="side-controls">
+    <button class="side-btn theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+          </svg>
+          <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2"></path><path d="M12 20v2"></path><path d="m4.93 4.93 1.41 1.41"></path><path d="m17.66 17.66 1.41 1.41"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m6.34 17.66-1.41 1.41"></path><path d="m19.07 4.93-1.41 1.41"></path>
+          </svg>
+        </button>
+    <button class="side-btn music-toggle" id="musicToggle" aria-label="Toggle music">
+          <canvas id="visualizerCanvas" width="96" height="96"></canvas>
+        </button>
+  </div>
+
+  <main>
+    <div class="page">
+
+      <!-- Hero -->
+      <div class="hero-top">
+        <img class="avatar" src="public/jay.webp" alt="Jay Patel">
+        <div>
+          <h1>Jay Patel<span class="waving-hand">👋</span></h1>
+          <p class="role"><span id="roleText" class="role-text">AI &amp; Full-Stack Engineer</span></p>
+        </div>
+      </div>
+
+      <div class="meta-row">
+        <div class="meta">
+          <span class="meta-label">Location</span>
+          <span class="meta-value">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+            Surat, India
+          </span>
+        </div>
+        <div class="meta">
+          <span class="meta-label">Email</span>
+          <a class="meta-value" href="mailto:jaypatel210776@gmail.com">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+            jaypatel210776@gmail.com
+          </a>
+        </div>
+        <div class="meta">
+          <span class="meta-label">Status</span>
+          <span class="meta-value"><span class="status-dot"></span>busy building</span>
+        </div>
+      </div>
+
+      <p class="intro">
+        I've been making computers do cool stuff ever since I saw Siri talk. Turns out, asking "how does this work?"
+        long enough leads to building your own. Currently working with <strong>Python</strong>, <strong>FastAPI</strong>,
+        <strong>LangGraph</strong>, <strong>Next.js</strong>, and the <strong>MERN</strong> stack.
+      </p>
+
+      <div class="socials">
+        <a href="http://github.com/jaypatel345" target="_blank" rel="noopener noreferrer" aria-label="GitHub" data-tip="GitHub">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+        </a>
+        <a href="http://linkedin.com/in/jaypatel3405" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" data-tip="LinkedIn">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+        </a>
+        <a href="https://x.com/JayPatel3405" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)" data-tip="X (Twitter)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
+        </a>
+        <a href="https://leetcode.com/u/jay-patel-8" target="_blank" rel="noopener noreferrer" aria-label="LeetCode" data-tip="LeetCode">
+          <svg role="img" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor"><path d="M13.483 0a1.374 1.374 0 0 0 -0.961 0.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0 -1.209 2.104 5.35 5.35 0 0 0 -0.125 0.513 5.527 5.527 0 0 0 0.062 2.362 5.83 5.83 0 0 0 0.349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193 0.039 0.038c2.248 2.165 5.852 2.133 8.063 -0.074l2.396 -2.392c0.54 -0.54 0.54 -1.414 0.003 -1.955a1.378 1.378 0 0 0 -1.951 -0.003l-2.396 2.392a3.021 3.021 0 0 1 -4.205 0.038l-0.02 -0.019 -4.276 -4.193c-0.652 -0.64 -0.972 -1.469 -0.948 -2.263a2.68 2.68 0 0 1 0.066 -0.523 2.545 2.545 0 0 1 0.619 -1.164L9.13 8.114c1.058 -1.134 3.204 -1.27 4.43 -0.278l3.501 2.831c0.593 0.48 1.461 0.387 1.94 -0.207a1.384 1.384 0 0 0 -0.207 -1.943l-3.5 -2.831c-0.8 -0.647 -1.766 -1.045 -2.774 -1.202l2.015 -2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0 -1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38 -1.382 1.38 1.38 0 0 0 -1.38 -1.382z"></path></svg>
+        </a>
+        <a href="mailto:jaypatel210776@gmail.com" aria-label="Email" data-tip="Email">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+        </a>
+        <a class="resume-pill" href="public/JayPatel_CV.pdf" download="JayPatel_CV.pdf">Resume
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><path d="m7 10 5 5 5-5"></path><path d="M12 15V3"></path></svg>
+        </a>
+      </div>
+
+      <!-- Coding activity (moved to the top, like the reference layout) -->
+      <div class="coding-block">
+        <div id="contribution-tracker" class="contribution-tracker-section"></div>
+      </div>
+
+      <!-- Tech stack -->
+      <section class="block">
+        <h2 class="eyebrow">Tech Stack</h2>
+        <div class="tech-icons">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" data-tip="TypeScript">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" data-tip="JavaScript">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" data-tip="Python">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg" alt="C++" data-tip="C++">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" data-tip="Node.js">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" data-tip="React">
+          <img class="mono" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" data-tip="Next.js">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/tailwindcss/tailwindcss-original.svg" alt="Tailwind CSS" data-tip="Tailwind CSS">
+          <img class="mono" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express.js" data-tip="Express.js">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI" data-tip="FastAPI">
+          <img class="mono" src="https://cdn.jsdelivr.net/npm/simple-icons/icons/langchain.svg" alt="LangGraph" data-tip="LangGraph">
+          <img src="https://cdn.simpleicons.org/claude" alt="Claude" data-tip="Claude">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" data-tip="MongoDB">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" data-tip="PostgreSQL">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg" alt="MySQL" data-tip="MySQL">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis" data-tip="Redis">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" data-tip="Docker">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" data-tip="Git">
+          <img class="mono" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg" alt="GitHub" data-tip="GitHub">
+        </div>
+      </section>
+
+      <!-- Featured projects -->
+      <section class="block">
+        <h2 class="eyebrow">Featured Projects</h2>
+        <div class="project-grid">
+
+          <article class="card">
+            <div class="card-thumb thumb-newsbit">
+              <span class="thumb-title">Newsbit AI</span>
+              <img src="public/projects/newsbit.png" alt="" loading="lazy" onerror="this.remove()">
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3>Newsbit AI</h3>
+                <div class="card-links">
+                  <a href="https://github.com/jaypatel345/newsbit" target="_blank" rel="noopener noreferrer" aria-label="GitHub" data-tip="View on GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                  </a>
+                  <a href="https://www.newsbit.in/" target="_blank" rel="noopener noreferrer" aria-label="Website" data-tip="Visit Website">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                  </a>
+                </div>
+              </div>
+              <p>An AI news agent that routes between hybrid metadata and vector search and a live web fallback, with 4-way LLM failover and an async cron pipeline for ingestion, summaries and TTS.</p>
+              <div class="card-stack">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" alt="Python" data-tip="Python">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/fastapi/fastapi-original.svg" alt="FastAPI" data-tip="FastAPI">
+                <img class="mono" src="https://cdn.jsdelivr.net/npm/simple-icons/icons/langchain.svg" alt="LangGraph" data-tip="LangGraph">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" data-tip="PostgreSQL">
+                <img class="mono" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" alt="Next.js" data-tip="Next.js">
+              </div>
+            </div>
+          </article>
+
+          <article class="card">
+            <div class="card-thumb thumb-promptx">
+              <span class="thumb-title">PromptX</span>
+              <img src="public/projects/promptx.png" alt="" loading="lazy" onerror="this.remove()">
+            </div>
+            <div class="card-body">
+              <div class="card-head">
+                <h3>PromptX</h3>
+                <div class="card-links">
+                  <a href="https://github.com/jaypatel345/PromptX" target="_blank" rel="noopener noreferrer" aria-label="GitHub" data-tip="View on GitHub">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+                  </a>
+                  <a href="http://promptx.co.in" target="_blank" rel="noopener noreferrer" aria-label="Website" data-tip="Visit Website">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path><path d="M2 12h20"></path></svg>
+                  </a>
+                </div>
+              </div>
+              <p>A production-ready AI prompt platform with a RAG assistant, BullMQ/Redis job queues, JWT + Google OAuth, and an indexed history API that cut documents examined per query by ~99.9%.</p>
+              <div class="card-stack">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" data-tip="Node.js">
+                <img class="mono" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express.js" data-tip="Express.js">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" data-tip="MongoDB">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" data-tip="PostgreSQL">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/redis/redis-original.svg" alt="Redis" data-tip="Redis">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/docker/docker-original.svg" alt="Docker" data-tip="Docker">
+              </div>
+            </div>
+          </article>
+
+        </div>
+        <a class="view-all" href="projects.html">View all projects
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+        </a>
+      </section>
+
+      <!-- Experience -->
+      <section class="block">
+        <h2 class="eyebrow">Experience</h2>
+        <div class="timeline">
+          <div class="timeline-line" aria-hidden="true"></div>
+          <ol>
+            <li>
+              <span class="dot current" aria-hidden="true"></span>
+              <div class="exp-head">
+                <div class="exp-title">
+                  <img class="exp-logo" src="public/techsteck_logo.jpeg" alt="Techsteck Solutions logo">
+                  <h3>AI / MERN Stack Intern</h3>
+                  <span class="sep">·</span>
+                  <span class="exp-company">Techsteck Solutions</span>
+                </div>
+                <span class="exp-date">Sep 2026 — Present</span>
+              </div>
+              <div class="exp-sub">Internship</div>
+              <p>Developing and maintaining backend services for a B2B Taxi Marketplace Platform, supporting core booking and marketplace workflows.</p>
+              <ul>
+                <li>Building REST APIs with PHP, Laravel and PostgreSQL</li>
+                <li>Collaborating on API design and schema decisions for multi-tenant operations across driver, rider and admin roles</li>
+              </ul>
+              <div class="exp-stack">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/php/php-original.svg" alt="PHP" data-tip="PHP">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/laravel/laravel-original.svg" alt="Laravel" data-tip="Laravel">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" data-tip="PostgreSQL">
+              </div>
+            </li>
+            <li>
+              <span class="dot" aria-hidden="true"></span>
+              <div class="exp-head">
+                <div class="exp-title">
+                  <img class="exp-logo" src="public/agevole_innovation_logo.jpeg" alt="Agevole Innovation logo">
+                  <h3>Full Stack Intern</h3>
+                  <span class="sep">·</span>
+                  <span class="exp-company">Agevole Innovation Pvt. Ltd.</span>
+                </div>
+                <span class="exp-date">Jan 2026 — Jun 2026</span>
+              </div>
+              <div class="exp-sub">Internship</div>
+              <p>Built MERN stack applications with JWT auth and role-based access, then optimized database queries and fixed production bugs.</p>
+              <ul>
+                <li>Shipped a full-stack e-commerce platform from development to production deployment</li>
+                <li>Designed REST APIs and CRUD flows for products, cart and orders; collaborated through git in an agile team</li>
+              </ul>
+              <div class="exp-stack">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mongodb/mongodb-original.svg" alt="MongoDB" data-tip="MongoDB">
+                <img class="mono" src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" alt="Express.js" data-tip="Express.js">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" alt="React" data-tip="React">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" alt="Node.js" data-tip="Node.js">
+                <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/git/git-original.svg" alt="Git" data-tip="Git">
+              </div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- Contact -->
+      <section class="block" id="contact">
+        <h2 class="eyebrow">Let's Work Together</h2>
+        <div class="contact-grid">
+          <div class="card contact-card">
+            <h3>Get in Touch</h3>
+            <p class="muted">Choose your preferred method to connect and let's discuss your project.</p>
+            <a class="contact-row" href="mailto:jaypatel210776@gmail.com">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+              <span><strong>jaypatel210776@gmail.com</strong><small>Quick inquiries &amp; questions</small></span>
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a class="contact-row" href="http://linkedin.com/in/jaypatel3405" target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect width="4" height="12" x="2" y="9"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+              <span><strong>Connect on LinkedIn</strong><small>Professional network</small></span>
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <a class="contact-row" href="https://x.com/JayPatel3405" target="_blank" rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
+              <span><strong>Connect on X</strong><small>Follow for updates</small></span>
+              <svg class="arrow" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 7h10v10"></path><path d="M7 17 17 7"></path></svg>
+            </a>
+            <ul class="contact-notes">
+              <li>Open to internships, freelance &amp; full-time roles</li>
+            </ul>
+          </div>
+
+          <form class="card contact-card" id="contactForm">
+            <h3>Send a Message</h3>
+            <p class="muted">Prefer to write? Fill out the form and it lands straight in my inbox.</p>
+            <input type="text" name="name" placeholder="Full Name" required>
+            <input type="email" name="email" placeholder="Email Address" required>
+            <textarea name="message" placeholder="Your Message" rows="4" required></textarea>
+            <button type="submit">Send Message
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+            </button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Quote + visitor counter -->
+      <section class="block">
+        <div class="card quote-visitor">
+          <div class="quote-side">
+            <svg class="quote-icon" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"></path><path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 4v3c0 1 0 1 1 1z"></path></svg>
+            <div id="quoteRotor" class="quote-rotor" aria-live="off"></div>
+          </div>
+          <div class="visitor-side" id="visitorBox" hidden>
+            <span>You are the</span>
+            <span class="visitor-number"><strong id="visitorCount">0</strong><sup id="visitorSuffix">th</sup></span>
+            <span>visitor</span>
+          </div>
+        </div>
+      </section>
+
+      <footer class="footer">
+        <div class="footer-left">
+          <span>© 2026 Jay Patel.</span>
+          <span class="footer-sep"></span>
+          <a href="index.html">Home</a>
+          <a href="projects.html">Projects</a>
+          <a href="about.html">About</a>
+        </div>
+        <div class="footer-right">
+          <a href="https://x.com/JayPatel3405" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter)">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"></path><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"></path></svg>
+          </a>
+          <a href="mailto:jaypatel210776@gmail.com" aria-label="Email">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+          </a>
+          <a href="http://github.com/jaypatel345" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path><path d="M9 18c-4.51 2-5-2-7-2"></path></svg>
+          </a>
+        </div>
+      </footer>
+
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.18/dist/lenis.min.js"></script>
   <script src="script.js"></script>
-  
+
   <!-- Music Player Audio -->
   <audio id="audioPlayer" loop crossorigin="anonymous">
     <source src="public/ambient-432hz.m4a" type="audio/mp4">
     Your browser does not support the audio element.
   </audio>
-  
+
   <script src="music-player.js"></script>
 </body>
 </html>

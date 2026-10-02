@@ -23,11 +23,10 @@ class ContributionCell {
    */
   static getColors() {
     return {
-      empty: '#ebedf0',
-     level1: '#9be9a8',  // light green (GitHub level 1)
-      level2: '#40c463',  // mid green (GitHub level 2)
-      level3: '#30a14e',   // dark green (GitHub level 3)
-         // light green for coding boxes
+      empty: '#ebebeb',
+      level1: '#d2d2d2',  // light gray (2+ hours)
+      level2: '#a6a6a6',  // mid gray (6+ hours)
+      level3: '#707070',  // deep gray (10+ hours)
     };
   }
 
@@ -36,11 +35,10 @@ class ContributionCell {
    */
   static getDarkColors() {
     return {
-      empty: '#161b22',
-      level1: '#0e4429',  // light green (2+ hours)
-      level2: '#006d32',  // mid green (6+ hours)
-      level3: '#26a641',  // dark green (10+ hours)
-       // light green for coding boxes in dark mode
+      empty: '#1d1d21',
+      level1: '#38383d',  // dark gray (2+ hours)
+      level2: '#606066',  // mid gray (6+ hours)
+      level3: '#9c9ca2',  // light gray (10+ hours)
     };
   }
 
