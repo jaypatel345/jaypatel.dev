@@ -265,16 +265,15 @@ function initContributionTracker() {
 // ============================================
 
 const QUOTES = [
-  { text: 'The unexamined life is not worth living.', author: 'Socrates' },
-  { text: 'The whole is greater than the sum of its parts.', author: 'Aristotle' },
-  { text: 'Waste no more time arguing about what a good man should be. Be one.', author: 'Marcus Aurelius' },
-  { text: 'He who has a why to live can bear almost any how.', author: 'Friedrich Nietzsche' },
-  { text: 'I think, therefore I am.', author: 'René Descartes' },
-  { text: 'Man is condemned to be free.', author: 'Jean-Paul Sartre' },
-  { text: 'We suffer more often in imagination than in reality.', author: 'Seneca' },
-  { text: 'It does not matter how slowly you go as long as you do not stop.', author: 'Confucius' },
-  { text: 'A journey of a thousand miles begins with a single step.', author: 'Lao Tzu' },
-  { text: 'Life can only be understood backwards; but it must be lived forwards.', author: 'Søren Kierkegaard' }
+  { text: 'Stay hungry. Stay foolish.', author: 'Steve Jobs' },
+  { text: 'The only way to do great work is to love what you do.', author: 'Steve Jobs' },
+  { text: 'When something is important enough, you do it even if the odds are not in your favor.', author: 'Elon Musk' },
+  { text: 'Failure is an option here. If things are not failing, you are not innovating enough.', author: 'Elon Musk' },
+  { text: 'Your most unhappy customers are your greatest source of learning.', author: 'Bill Gates' },
+  { text: 'Success is a lousy teacher. It seduces smart people into thinking they can\'t lose.', author: 'Bill Gates' },
+  { text: 'Price is what you pay. Value is what you get.', author: 'Warren Buffett' },
+  { text: 'It takes 20 years to build a reputation and five minutes to ruin it.', author: 'Warren Buffett' },
+  { text: 'Discipline is doing it even when you don\'t feel like it.', author: 'Chris Bumstead' }
 ];
 
 let quoteTimer = null;
@@ -342,7 +341,7 @@ function initQuoteRotator() {
     current = (current + 1) % order.length;
     layers[current].classList.add('active');
     layers[current].setAttribute('aria-hidden', 'false');
-  }, 6000);
+  }, 13000);
 }
 
 // ============================================

@@ -363,7 +363,7 @@ body.dark-mode img.mono { filter: invert(1); }
   justify-content: center;
 }
 
-.card-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.card-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 
 .thumb-title {
   font-family: var(--font-sans);
@@ -377,6 +377,8 @@ body.dark-mode img.mono { filter: invert(1); }
 .thumb-newsbit { background: radial-gradient(120% 120% at 20% 10%, #60a5fa 0%, #2563eb 45%, #1e3a8a 100%); }
 .thumb-promptx { background: radial-gradient(120% 120% at 80% 10%, #a78bfa 0%, #7c3aed 45%, #3b0764 100%); }
 .thumb-stylenest { background: radial-gradient(120% 120% at 20% 90%, #fb923c 0%, #e11d48 50%, #4c0519 100%); }
+.thumb-aslioffer { background: radial-gradient(120% 120% at 80% 90%, #34d399 0%, #059669 45%, #064e3b 100%); }
+.thumb-borrower { background: radial-gradient(120% 120% at 20% 10%, #818cf8 0%, #4338ca 45%, #1e1b4b 100%); }
 
 .card-body { padding: 1rem 1rem 1.1rem; }
 
