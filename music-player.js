@@ -18,8 +18,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 
   // Check if audio is supported
-  if (!audioPlayer.canPlayType('audio/mp4')) {
-    console.warn('AAC/m4a format may not be supported in this browser');
+  if (!audioPlayer.canPlayType('audio/mpeg')) {
+    console.warn('MP3 format may not be supported in this browser');
   }
   
   // Initialize Audio Context and Visualizer
